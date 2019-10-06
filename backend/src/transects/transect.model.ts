@@ -41,32 +41,34 @@ export interface Transect extends mongoose.Document {
 }
 
 export class TransectDTO {
-  @ApiModelProperty()
+  @ApiModelProperty({example: "5d9a3ad6f9967419acde0731"})
+  _id: string;  
+  @ApiModelProperty({example: "T1"})
   name: string;
-  @ApiModelProperty()
+  @ApiModelProperty({example: '2019-10-06T21:18:44.471Z'})
   created_at: Date;
-  @ApiModelProperty()
+  @ApiModelProperty({example: "5d987dc90ed4833f3c28072c"})
   observation_id: string ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: "5d987dc90ed4833f3c28072c"})
   site_id: string ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 48.8025884})
   start_pos_latitude: number ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 2.1847466})
   start_pos_longitude: number ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 48.8025884})
   end_pos_latitude: number ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 2.1847466})
   end_pos_longitude: number ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: true})
   sifting_trace: boolean ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: true})
   motor_access: boolean ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 21})
   foreshore_cumulated_length_m: number;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 3})
   foreshore_average_width_m: number;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 7})
   foreshore_average_thickness_cm: number;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 'Tout commentaire additionnel sur le transect'})
   additional_info: string;
 }

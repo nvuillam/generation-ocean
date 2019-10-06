@@ -23,16 +23,16 @@ export interface Site extends mongoose.Document {
 }
 
 export class SiteDTO {
-  @ApiModelProperty()
+  @ApiModelProperty({example: "5d987dc90ed4833f3c28072c"})
   _id: string;
-  @ApiModelProperty()
+  @ApiModelProperty({example: "Plage des glénans"})
   name: string;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 48.8025884})
   pos_longitude: number ;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 2.1847466})
   pos_latitude: number ; 
-  @ApiModelProperty()
+  @ApiModelProperty({example: '2019-10-06T21:18:44.471Z'})
   created_at: Date;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 'Tout commentaire additionnel sur le site d\'observation'})
   additional_info: string;
 }

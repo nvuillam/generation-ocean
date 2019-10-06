@@ -32,24 +32,25 @@ export interface Observation extends mongoose.Document {
 }
 
 export class ObservationDTO {
-  @ApiModelProperty()
+  @ApiModelProperty({example: "5d987dc90ed4833f3c28072c"})
   _id: string;
-  @ApiModelProperty()
+  @ApiModelProperty({example: "Observations classe de mer école des mouettes"})
   name: string;
-  @ApiModelProperty()
+  @ApiModelProperty({example: "5d9a59858d57fa0e34f23a0e"})
   site_id: string;
-  @ApiModelProperty()
+  @ApiModelProperty({example: "5d9a59858d57fa0e34f23a0e"})
   group_id: string;
-  @ApiModelProperty({ enum: ['ALAMER'] })
+  @ApiModelProperty({ enum: ['ALAMER'] , example: "ALAMER"})
   protocol: string;
   @ApiModelProperty({
     enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
+    example: 'draft'
   })
   status: string;
-  @ApiModelProperty()
+  @ApiModelProperty({example: '2019-10-06T21:18:44.471Z'})
   created_at: Date;
-  @ApiModelProperty()
+  @ApiModelProperty({example: '2019-10-06T21:18:44.471Z'})
   started_at: Date;
-  @ApiModelProperty()
+  @ApiModelProperty({example: 'Tout commentaire additionnel sur l\'observation'})
   additional_info: string;
 }
