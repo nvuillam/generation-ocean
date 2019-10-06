@@ -13,8 +13,8 @@ async function bootstrap() {
 
   // Initialize swagger module
   const options = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('API description')
+    .setTitle('Generation Ocean API')
+    .setDescription('Available resources for Generation Ocean API. For more information please contact Generation Ocean association')
     .setVersion('1.0')
     .setBasePath(BASE_API_PATH)
     .addTag('observations')
