@@ -45,6 +45,11 @@ export class ObservationsService {
     return result;
   }
 
+  async getObservationsBySite(siteId: string) {
+    const observations = await this.observationModel.find({site_id: siteId }).exec();
+    return observations ;
+  }
+
   /*
   async deleteProduct(prodId: string) {
     const result = await this.productModel.deleteOne({_id: prodId}).exec();

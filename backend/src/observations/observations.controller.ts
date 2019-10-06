@@ -10,11 +10,14 @@ import {
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ObservationsService } from './observations.service';
 import { Observation, ObservationDTO } from './observation.model';
+import { TransectsService } from '../transects/transects.service';
+import { TransectDTO } from '../transects/transect.model';
 
 @ApiUseTags('observations')
 @Controller('observations')
 export class ObservationsController {
-  constructor(private readonly observationsService: ObservationsService) {}
+  constructor(private readonly observationsService: ObservationsService,
+              private readonly transectsService: TransectsService) {}
 
   @Post()
   @ApiOperation({ title: 'Create a new observation' })
@@ -70,4 +73,16 @@ export class ObservationsController {
         await this.productsService.deleteProduct(prodId);
         return null;
     } */
+
+    @Get(':id/transects')
+    @ApiOperation({ title: 'List transects of an observation' })
+    @ApiResponse({
+      status: 200,
+      type: TransectDTO,
+      isArray: true,
+      description: 'Returned list of transects (can be none)',
+    })
+    getObservationTransects(@Param('id') observationId: string) {
+      return this.transectsService.getTransectsByObservation(observationId);
+    }
 }

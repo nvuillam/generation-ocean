@@ -18,6 +18,8 @@ async function bootstrap() {
     .setVersion('1.0')
     .setBasePath(BASE_API_PATH)
     .addTag('observations')
+    .addTag('transects')
+    .addTag('sites')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(`${BASE_API_PATH}/swagger`, app, document);
