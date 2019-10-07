@@ -10,6 +10,8 @@ import { ObservationsModule } from './observations/observations.module';
 import { TransectsModule } from './transects/transects.module';
 import { SitesModule } from './sites/sites.module';
 
+// Services modules
+import { WeatherModule } from './services/weather/weather.module';
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { SitesModule } from './sites/sites.module';
     ObservationsModule,
     SitesModule,
     TransectsModule,
+    WeatherModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -3,13 +3,19 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Observation } from './observation.model';
+import { Site } from '../sites/site.model';
+import { SitesService } from '../sites/sites.service';
+import { Weather } from '../services/weather/weather.model';
+import { WeatherService } from '../services/weather/weather.service';
 
 @Injectable()
 export class ObservationsService {
   constructor(
     @InjectModel('Observation')
     private readonly observationModel: Model<Observation>,
-  ) {}
+    private readonly sitesService: SitesService,
+    private readonly weatherService: WeatherService
+  ) { }
 
   async insertObservation(observationData: Observation) {
     const newObservation: Observation = new this.observationModel(
@@ -46,8 +52,8 @@ export class ObservationsService {
   }
 
   async getObservationsBySite(siteId: string) {
-    const observations = await this.observationModel.find({site_id: siteId }).exec();
-    return observations ;
+    const observations = await this.observationModel.find({ site_id: siteId }).exec();
+    return observations;
   }
 
   /*
@@ -69,5 +75,25 @@ export class ObservationsService {
       throw new NotFoundException('Could not find observation.');
     }
     return observation;
+  }
+
+  // Add weather data on observation ( only if GPS location is defined)
+  private async manageWeatherData(force: boolean = false, observationDataFromClient: Observation, observationId: string) {
+    let localWeatherInfo: Weather;
+    if (observationDataFromClient.site_id != null) {
+      const site: Site = await this.sitesService.getSingleSite(observationDataFromClient.site_id);
+      if (site.pos_latitude != null && site.pos_longitude != null) {
+        localWeatherInfo = await this.weatherService.getLocalWeatherInfo(site.pos_latitude, site.pos_longitude)
+      }
+    }
+    // If weather info found, set it on the Observation
+    if (localWeatherInfo) {
+      const storedObservation: Observation = await this.findObservation(observationId)
+      storedObservation.weather = localWeatherInfo
+      const result = storedObservation.save()
+      return result
+    }
+    else
+      return null
   }
 }
