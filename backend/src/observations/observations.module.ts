@@ -18,10 +18,10 @@ import { WeatherModule } from '../services/weather/weather.module';
     ]),
     forwardRef(() => SitesModule),
     TransectsModule,
-    WeatherModule
+    WeatherModule,
   ],
   exports: [ObservationsService],
   controllers: [ObservationsController],
   providers: [ObservationsService],
 })
-export class ObservationsModule { } 
+export class ObservationsModule { }

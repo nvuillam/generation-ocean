@@ -41,15 +41,15 @@ export interface Transect extends mongoose.Document {
 }
 
 export class TransectDTO {
-  @ApiModelProperty({example: "5d9a3ad6f9967419acde0731"})
-  _id: string;  
-  @ApiModelProperty({example: "T1"})
+  @ApiModelProperty({example: '5d9a3ad6f9967419acde0731'})
+  _id: string;
+  @ApiModelProperty({example: 'T1'})
   name: string;
   @ApiModelProperty({example: '2019-10-06T21:18:44.471Z'})
   created_at: Date;
-  @ApiModelProperty({example: "5d987dc90ed4833f3c28072c"})
+  @ApiModelProperty({example: '5d987dc90ed4833f3c28072c'})
   observation_id: string ;
-  @ApiModelProperty({example: "5d987dc90ed4833f3c28072c"})
+  @ApiModelProperty({example: '5d987dc90ed4833f3c28072c'})
   site_id: string ;
   @ApiModelProperty({example: 48.8025884})
   start_pos_latitude: number ;

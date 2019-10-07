@@ -16,10 +16,10 @@ import { WeatherModule } from '../services/weather/weather.module';
       { name: 'Site', schema: SiteSchema },
     ]),
     forwardRef(() => ObservationsModule),
-    WeatherModule
+    WeatherModule,
   ],
   exports: [
-    SitesService
+    SitesService,
   ],
   controllers: [SitesController],
   providers: [SitesService],

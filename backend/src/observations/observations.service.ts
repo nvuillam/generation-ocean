@@ -14,7 +14,7 @@ export class ObservationsService {
     @InjectModel('Observation')
     private readonly observationModel: Model<Observation>,
     private readonly sitesService: SitesService,
-    private readonly weatherService: WeatherService
+    private readonly weatherService: WeatherService,
   ) { }
 
   async insertObservation(observationData: Observation) {
@@ -22,7 +22,7 @@ export class ObservationsService {
       observationData,
     );
     const result = await newObservation.save().then((savedObservation) => {
-      return this.manageObservationWeatherData(savedObservation)
+      return this.manageObservationWeatherData(savedObservation);
     });
     return result;
   }
@@ -81,18 +81,17 @@ export class ObservationsService {
 
   // Add weather data on observation ( only if GPS location is defined)
   async manageObservationWeatherData(observation: Observation): Promise<Observation> {
-    console.debug('Managing weather info on Observation document')
     if (observation.site_id != null) {
       const site: Site = await this.sitesService.getSingleSite(observation.site_id);
       if (site.pos_latitude != null && site.pos_longitude != null) {
-        const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(site.pos_latitude, site.pos_longitude)
+        const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(site.pos_latitude, site.pos_longitude);
         // If weather info found, set it on the Observation
         if (localWeatherInfo) {
-          observation.weather = localWeatherInfo
-          return observation.save()
+          observation.weather = localWeatherInfo;
+          return observation.save();
         }
       }
     }
-    return observation
+    return observation;
   }
 }

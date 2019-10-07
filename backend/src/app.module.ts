@@ -20,7 +20,7 @@ import { WeatherModule } from './services/weather/weather.module';
     ObservationsModule,
     SitesModule,
     TransectsModule,
-    WeatherModule
+    WeatherModule,
   ],
   controllers: [AppController],
   providers: [AppService],

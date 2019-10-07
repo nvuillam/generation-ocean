@@ -1,42 +1,42 @@
-import { Injectable, } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
-import { ConfigService } from '../../config/config.service'
-import { OpenWeatherMapService } from './openWeatherMap/openweathermap.service'
+import { ConfigService } from '../../config/config.service';
+import { OpenWeatherMapService } from './openWeatherMap/openweathermap.service';
 import { Weather } from './weather.model';
 
 @Injectable()
 export class WeatherService {
   constructor(private config: ConfigService,
-    private openWeatherMapService: OpenWeatherMapService) { }
+              private openWeatherMapService: OpenWeatherMapService) { }
 
   // Call related weather info service
-  async getLocalWeatherInfo(posLatitude: Number, posLongitude: Number): Promise<Weather> {
-    const weatherProviderList = this.getWeatherApiProvider()
+  async getLocalWeatherInfo(posLatitude: number, posLongitude: number): Promise<Weather> {
+    const weatherProviderList = this.getWeatherApiProvider();
     let weather: Weather = {
       raw_results: {},
-      sea_level: null
-    }
+      sea_level: null,
+    };
     // OpenWeatherMap.com
     if (weatherProviderList.includes('openWeatherMap')) {
-      const rawData: any = await this.openWeatherMapService.getLocalWeatherInfo(posLatitude, posLongitude)
-      weather.raw_results["openWeatherMap"] = rawData
-      const weatherConvertedData: any = await this.openWeatherMapService.convertRawToGenerationOceanFormat(rawData)
+      const rawData: any = await this.openWeatherMapService.getLocalWeatherInfo(posLatitude, posLongitude);
+      weather.raw_results.openWeatherMap = rawData;
+      const weatherConvertedData: any = await this.openWeatherMapService.convertRawToGenerationOceanFormat(rawData);
       weather = {
         ...weather,
-        ...weatherConvertedData
-      }
+        ...weatherConvertedData,
+      };
     }
 
     return weather;
   }
 
-
-  private getWeatherApiProvider(): Array<String> {
-    const fromConfig = this.config.get('PROVIDER_WEATHER_LIST')
-    if (fromConfig != null)
-      return fromConfig.split(',')
-    else
-      return ['openWeatherMap']
+  private getWeatherApiProvider(): string[] {
+    const fromConfig = this.config.get('PROVIDER_WEATHER_LIST');
+    if (fromConfig != null) {
+      return fromConfig.split(',');
+    } else {
+      return ['openWeatherMap'];
+    }
   }
 
 }

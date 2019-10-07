@@ -11,10 +11,10 @@ import { OpenWeatherMapService } from './openWeatherMap/openWeatherMap.service';
     HttpModule.register({
       timeout: 5000,
       maxRedirects: 5,
-    })
+    }),
   ],
   exports: [WeatherService],
   controllers: [],
   providers: [WeatherService, OpenWeatherMapService],
 })
-export class WeatherModule { } 
+export class WeatherModule { }

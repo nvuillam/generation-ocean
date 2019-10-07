@@ -18,7 +18,7 @@ import { ObservationDTO } from '../observations/observation.model';
 @Controller('sites')
 export class SitesController {
   constructor(private readonly sitesService: SitesService,
-    private readonly observationsService: ObservationsService) {}
+              private readonly observationsService: ObservationsService) {}
 
   @Post()
   @ApiOperation({ title: 'Create a new site' })
