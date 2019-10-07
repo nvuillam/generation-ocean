@@ -1,27 +1,27 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { TransectsModule } from '../transects/transects.module';
-import { TransectsService } from '../transects/transects.service';
-import { TransectSchema } from '../transects/transect.model';
-
+// Current module
 import { ObservationsController } from './observations.controller';
 import { ObservationsService } from './observations.service';
 import { ObservationSchema } from './observation.model';
 
+// Dependencies
+import { TransectsModule } from '../transects/transects.module';
+import { SitesModule } from '../sites/sites.module';
 import { WeatherModule } from '../services/weather/weather.module';
-import { WeatherService } from '../services/weather/weather.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Observation', schema: ObservationSchema },
-      { name: 'Transect', schema: TransectSchema },
     ]),
+    forwardRef(() => SitesModule),
     TransectsModule,
     WeatherModule
   ],
+  exports: [ObservationsService],
   controllers: [ObservationsController],
-  providers: [ObservationsService, TransectsService, WeatherService],
+  providers: [ObservationsService],
 })
 export class ObservationsModule { } 

@@ -2,7 +2,7 @@
 
 import * as mongoose from 'mongoose';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { Weather, WeatherDTO } from '../services/weather/weather.model';
+import { Weather } from '../services/weather/weather.model';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -20,12 +20,7 @@ export const ObservationSchema = new mongoose.Schema({
   additional_info: String,
 
   weather: { type: Map }
-}) // Get weather info before saving
-  .pre('save', (doc) => {
-    if (this.weather == null) {
-      console.log('Requesting weather for observation')
-    }
-  });
+})
 
 export interface Observation extends mongoose.Document {
   _id: string;

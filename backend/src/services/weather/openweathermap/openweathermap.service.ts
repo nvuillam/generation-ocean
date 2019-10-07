@@ -10,16 +10,20 @@ export class OpenWeatherMapService {
   async getLocalWeatherInfo(posLatitude: Number, posLongitude: Number): Promise<any> {
     const baseUri = this.getOpenStreetMapBaseApiUrl()
     const apiKey = this.getOpenStreetMapApiKey()
-    const uri = baseUri + `/weather&lat=${posLatitude}&lon=${posLongitude}&appid=${apiKey}`
-    return this.http.get(uri)
-      .pipe(
-        map(response => {
-          const weather: Weather = {
-            raw_result: response.data
-          }
-          return weather
-        })
-      );
+    const uri = baseUri + `/weather?lat=${posLatitude}&lon=${posLongitude}&APPID=${apiKey}`
+    const obs = this.http.get(uri).
+      pipe(
+        map(response => response.data)
+      )
+    return obs.toPromise()
+  }
+
+  async convertRawToGenerationOceanFormat(rawData) {
+    const resultObj = {}
+    if (rawData.main && rawData.main.sea_level) {
+      resultObj['sea_level'] = rawData.main.sea_level
+    }
+    return resultObj
   }
 
   private getOpenStreetMapBaseApiUrl(): string {

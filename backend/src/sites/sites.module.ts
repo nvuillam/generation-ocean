@@ -1,23 +1,27 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+// Current module
 import { SitesController } from './sites.controller';
 import { SitesService } from './sites.service';
 import { SiteSchema } from './site.model';
 
+// Dependencies
 import { ObservationsModule } from '../observations/observations.module';
-import { ObservationsService } from '../observations/observations.service';
-import { ObservationSchema } from '../observations/observation.model';
+import { WeatherModule } from '../services/weather/weather.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'Site', schema: SiteSchema },
-      { name: 'Observation', schema: ObservationSchema },
     ]),
-    ObservationsModule
+    forwardRef(() => ObservationsModule),
+    WeatherModule
+  ],
+  exports: [
+    SitesService
   ],
   controllers: [SitesController],
-  providers: [SitesService,ObservationsService],
+  providers: [SitesService],
 })
-export class SitesModule {}
+export class SitesModule { }

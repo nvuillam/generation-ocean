@@ -1,16 +1,20 @@
-import { Module } from '@nestjs/common';
-
+import { Module, HttpModule } from '@nestjs/common';
 import { ConfigModule } from '../../config/config.module';
-import { ConfigService } from '../../config/config.service';
 
+// Current module
 import { WeatherService } from './weather.service';
-import { OpenWeatherMapService } from './openweathermap/openweathermap.service';
+import { OpenWeatherMapService } from './openWeatherMap/openWeatherMap.service';
 
 @Module({
   imports: [
-    ConfigModule
+    ConfigModule,
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    })
   ],
+  exports: [WeatherService],
   controllers: [],
-  providers: [WeatherService, OpenWeatherMapService, ConfigService],
+  providers: [WeatherService, OpenWeatherMapService],
 })
 export class WeatherModule { } 

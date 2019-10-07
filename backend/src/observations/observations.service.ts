@@ -21,7 +21,9 @@ export class ObservationsService {
     const newObservation: Observation = new this.observationModel(
       observationData,
     );
-    const result = await newObservation.save();
+    const result = await newObservation.save().then((savedObservation) => {
+      return this.manageObservationWeatherData(savedObservation)
+    });
     return result;
   }
 
@@ -78,22 +80,19 @@ export class ObservationsService {
   }
 
   // Add weather data on observation ( only if GPS location is defined)
-  private async manageWeatherData(force: boolean = false, observationDataFromClient: Observation, observationId: string) {
-    let localWeatherInfo: Weather;
-    if (observationDataFromClient.site_id != null) {
-      const site: Site = await this.sitesService.getSingleSite(observationDataFromClient.site_id);
+  async manageObservationWeatherData(observation: Observation): Promise<Observation> {
+    console.debug('Managing weather info on Observation document')
+    if (observation.site_id != null) {
+      const site: Site = await this.sitesService.getSingleSite(observation.site_id);
       if (site.pos_latitude != null && site.pos_longitude != null) {
-        localWeatherInfo = await this.weatherService.getLocalWeatherInfo(site.pos_latitude, site.pos_longitude)
+        const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(site.pos_latitude, site.pos_longitude)
+        // If weather info found, set it on the Observation
+        if (localWeatherInfo) {
+          observation.weather = localWeatherInfo
+          return observation.save()
+        }
       }
     }
-    // If weather info found, set it on the Observation
-    if (localWeatherInfo) {
-      const storedObservation: Observation = await this.findObservation(observationId)
-      storedObservation.weather = localWeatherInfo
-      const result = storedObservation.save()
-      return result
-    }
-    else
-      return null
+    return observation
   }
 }

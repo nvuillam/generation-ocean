@@ -3,10 +3,14 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export interface Weather {
-  raw_result: Map<String, any>;
+  sea_level: number
+  raw_results: any;
 }
 
 export class WeatherDTO {
-  @ApiModelProperty({ example: '{ "raw_result" : { "temp" : "21", "maree" : "12" }}' })
-  raw_result: Map<String, any>
+  @ApiModelProperty({ example: 1009.93 })
+  sea_level: number
+
+  @ApiModelProperty({ example: '{ "raw_results" : { "openweathermap": {"temp" : "21", "maree" : "12" }}}' })
+  raw_results: any
 }
