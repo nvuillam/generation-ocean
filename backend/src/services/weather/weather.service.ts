@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ConfigService } from '../../config/config.service';
-import { OpenWeatherMapService } from './openWeatherMap/openWeatherMap.service';
+import { OpenWeatherMapService } from './openweathermap/openweathermap.service';
 import { Weather } from './weather.model';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class WeatherService {
       sea_level: null,
     };
     // OpenWeatherMap.com
-    if (weatherProviderList.includes('openWeatherMap')) {
+    if (weatherProviderList.includes('openweathermap')) {
       const rawData: any = await this.openWeatherMapService.getLocalWeatherInfo(posLatitude, posLongitude);
       weather.raw_results.openWeatherMap = rawData;
       const weatherConvertedData: any = await this.openWeatherMapService.convertRawToGenerationOceanFormat(rawData);
@@ -35,7 +35,7 @@ export class WeatherService {
     if (fromConfig != null) {
       return fromConfig.split(',');
     } else {
-      return ['openWeatherMap'];
+      return ['openweathermap'];
     }
   }
 

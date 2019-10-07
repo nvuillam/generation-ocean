@@ -3,7 +3,7 @@ import { ConfigModule } from '../../config/config.module';
 
 // Current module
 import { WeatherService } from './weather.service';
-import { OpenWeatherMapService } from './openWeatherMap/openWeatherMap.service';
+import { OpenWeatherMapService } from './openweathermap/openweathermap.service';
 
 @Module({
   imports: [
