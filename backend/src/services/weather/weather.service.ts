@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ConfigService } from '../../config/config.service';
-import { OpenWeatherMapService } from './openWeatherMap/openweathermap.service';
+import { OpenWeatherMapService } from './openWeatherMap/openWeatherMap.service';
 import { Weather } from './weather.model';
 
 @Injectable()
