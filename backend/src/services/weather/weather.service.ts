@@ -6,8 +6,9 @@ import { Weather } from './weather.model';
 
 @Injectable()
 export class WeatherService {
-  constructor(private config: ConfigService,
-              private openWeatherMapService: OpenWeatherMapService) { }
+  constructor(
+    private config: ConfigService,
+    private openWeatherMapService: OpenWeatherMapService) { }
 
   // Call related weather info service
   async getLocalWeatherInfo(posLatitude: number, posLongitude: number): Promise<Weather> {
@@ -19,7 +20,7 @@ export class WeatherService {
     // OpenWeatherMap.com
     if (weatherProviderList.includes('openweathermap')) {
       const rawData: any = await this.openWeatherMapService.getLocalWeatherInfo(posLatitude, posLongitude);
-      weather.raw_results.openWeatherMap = rawData;
+      weather.raw_results.openweathermap = rawData;
       const weatherConvertedData: any = await this.openWeatherMapService.convertRawToGenerationOceanFormat(rawData);
       weather = {
         ...weather,
