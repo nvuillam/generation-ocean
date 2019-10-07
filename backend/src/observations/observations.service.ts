@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import { Observation } from './observation.model';
 import { Site } from '../sites/site.model';
 import { SitesService } from '../sites/sites.service';
-import { Weather } from '../services/weather/weather.model';
 import { WeatherService } from '../services/weather/weather.service';
 
 @Injectable()
@@ -49,7 +48,9 @@ export class ObservationsService {
       observationId,
     );
     updatedObservation.set(observationData);
-    const result = updatedObservation.save();
+    const result = updatedObservation.save().then((savedObservation) => {
+      return this.manageObservationWeatherData(savedObservation);
+    });
     return result;
   }
 
@@ -79,9 +80,9 @@ export class ObservationsService {
     return observation;
   }
 
-  // Add weather data on observation ( only if GPS location is defined)
+  // Add weather data on observation ( only if GPS location is defined and weather has not been retrieved yet)
   async manageObservationWeatherData(observation: Observation): Promise<Observation> {
-    if (observation.site_id != null) {
+    if (observation.site_id != null && observation.weather == null) {
       const site: Site = await this.sitesService.getSingleSite(observation.site_id);
       if (site.pos_latitude != null && site.pos_longitude != null) {
         const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(site.pos_latitude, site.pos_longitude);
