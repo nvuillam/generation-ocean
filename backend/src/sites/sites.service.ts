@@ -9,7 +9,7 @@ export class SitesService {
   constructor(
     @InjectModel('Site')
     private readonly siteModel: Model<Site>,
-  ) {}
+  ) { }
 
   async insertSite(siteData: Site) {
     const newSite: Site = new this.siteModel(
@@ -17,6 +17,11 @@ export class SitesService {
     );
     const result = await newSite.save();
     return result;
+  }
+
+  async getSites(params: object) {
+    const sites = await this.siteModel.find(params).exec();
+    return sites;
   }
 
   async getSingleSite(siteId: string) {

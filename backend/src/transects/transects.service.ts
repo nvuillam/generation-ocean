@@ -9,7 +9,7 @@ export class TransectsService {
   constructor(
     @InjectModel('Transect')
     private readonly transectModel: Model<Transect>,
-  ) {}
+  ) { }
 
   async insertTransect(transectData: Transect) {
     const newTransect: Transect = new this.transectModel(
@@ -18,18 +18,6 @@ export class TransectsService {
     const result = await newTransect.save();
     return result;
   }
-
-  /*  async getProducts() {
-    const products = await this.productModel.find().exec();
-    return products.map(prod => ({
-      id: prod.id,
-      title: prod.title,
-      description: prod.description,
-      price: prod.price,
-    }));
-  }
-
-  */
 
   async getSingleTransect(transectId: string) {
     const transect: Transect = await this.findTransect(transectId);
@@ -46,18 +34,10 @@ export class TransectsService {
   }
 
   async getTransectsByObservation(observationId: string) {
-    const transects = await this.transectModel.find({observation_id: observationId }).exec();
-    return transects ;
+    const transects = await this.transectModel.find({ observation_id: observationId }).exec();
+    return transects;
   }
 
-  /*
-  async deleteProduct(prodId: string) {
-    const result = await this.productModel.deleteOne({_id: prodId}).exec();
-    if (result.n === 0) {
-      throw new NotFoundException('Could not find product.');
-    }
-  }
- */
   private async findTransect(id: string): Promise<Transect> {
     let transect;
     try {

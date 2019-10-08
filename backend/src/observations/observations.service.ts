@@ -26,18 +26,6 @@ export class ObservationsService {
     return result;
   }
 
-  /*  async getProducts() {
-    const products = await this.productModel.find().exec();
-    return products.map(prod => ({
-      id: prod.id,
-      title: prod.title,
-      description: prod.description,
-      price: prod.price,
-    }));
-  }
-
-  */
-
   async getSingleObservation(observationId: string) {
     const observation: Observation = await this.findObservation(observationId);
     return observation;

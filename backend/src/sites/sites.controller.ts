@@ -4,6 +4,7 @@ import {
   Body,
   Get,
   Param,
+  Query,
   Put,
   Delete,
 } from '@nestjs/common';
@@ -18,7 +19,7 @@ import { ObservationDTO } from '../observations/observation.model';
 @Controller('sites')
 export class SitesController {
   constructor(private readonly sitesService: SitesService,
-              private readonly observationsService: ObservationsService) {}
+              private readonly observationsService: ObservationsService) { }
 
   @Post()
   @ApiOperation({ title: 'Create a new site' })
@@ -34,12 +35,25 @@ export class SitesController {
     return siteCreated;
   }
 
-  /*    @Get()
-    async getAllProducts() {
-      const products = await this.productsService.getProducts();
-      return products;
+  @Get()
+  @ApiOperation({ title: 'Find sites' })
+  @ApiResponse({
+    status: 200,
+    type: SiteDTO,
+    isArray: true,
+    description: 'Liste of found sites',
+  })
+  async getSites(
+    @Query('name') name: string,
+  ) {
+    const params: { [key: string]: any } = {};
+    if (name) {
+      params.name = { $regex: '.*' + name + '.*' };
     }
-  */
+    const sites = await this.sitesService.getSites(params);
+    return sites;
+  }
+
   @Get(':id')
   @ApiOperation({ title: 'Get a single site' })
   @ApiResponse({
@@ -47,7 +61,7 @@ export class SitesController {
     type: SiteDTO,
     description: 'The record has been successfully retrieved',
   })
-  getSite(@Param('id') siteId: string) {
+  async getSite(@Param('id') siteId: string) {
     return this.sitesService.getSingleSite(siteId);
   }
 
@@ -75,15 +89,15 @@ export class SitesController {
         return null;
     } */
 
-    @Get(':id/observations')
-    @ApiOperation({ title: 'List observations of a site' })
-    @ApiResponse({
-      status: 200,
-      type: ObservationDTO,
-      isArray: true,
-      description: 'Returned list of observations (can be none)',
-    })
-    getSiteTransects(@Param('id') siteId: string) {
-      return this.observationsService.getObservationsBySite(siteId);
-    }
+  @Get(':id/observations')
+  @ApiOperation({ title: 'List observations of a site' })
+  @ApiResponse({
+    status: 200,
+    type: ObservationDTO,
+    isArray: true,
+    description: 'Returned list of observations (can be none)',
+  })
+  getSiteTransects(@Param('id') siteId: string) {
+    return this.observationsService.getObservationsBySite(siteId);
+  }
 }
