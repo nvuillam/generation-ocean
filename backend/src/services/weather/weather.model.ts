@@ -10,6 +10,6 @@ export interface Weather {
 export class WeatherDTO {
   @ApiModelProperty({ example: 1009.93 })
   sea_level: number;
-  @ApiModelProperty({ example: '{ openWeatherMap: { xxxx : 1234 }}' })
+  @ApiModelProperty({ example: { openweathermap: { xxxx: 1234 } } })
   raw_results: any;
 }

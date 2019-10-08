@@ -11,10 +11,16 @@ import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { TransectsService } from './transects.service';
 import { Transect, TransectDTO } from './transect.model';
 
+import { QuadratsService } from '../quadrats/quadrats.service';
+import { QuadratDTO } from '../quadrats/quadrat.model';
+
 @ApiUseTags('transects')
 @Controller('transects')
 export class TransectsController {
-  constructor(private readonly transectsService: TransectsService) {}
+  constructor(
+    private readonly transectsService: TransectsService,
+    private readonly quadratsService: QuadratsService,
+  ) { }
 
   @Post()
   @ApiOperation({ title: 'Create a new transect' })
@@ -30,12 +36,6 @@ export class TransectsController {
     return transectCreated;
   }
 
-  /*    @Get()
-    async getAllProducts() {
-      const products = await this.productsService.getProducts();
-      return products;
-    }
-  */
   @Get(':id')
   @ApiOperation({ title: 'Get a single transect' })
   @ApiResponse({
@@ -64,10 +64,17 @@ export class TransectsController {
     );
     return transect;
   }
-  /*
-    @Delete(':id')
-    async removeProduct(@Param('id') prodId: string) {
-        await this.productsService.deleteProduct(prodId);
-        return null;
-    } */
+
+  @Get(':id/quadrats')
+  @ApiOperation({ title: 'List quadrats of a transect' })
+  @ApiResponse({
+    status: 200,
+    type: QuadratDTO,
+    isArray: true,
+    description: 'Returned list of quadrats (can be none)',
+  })
+  getTransectQuadrats(@Param('id') transectId: string) {
+    return this.quadratsService.getQuadratsByTransect(transectId);
+  }
+
 }

@@ -8,6 +8,8 @@ import { DatabaseModule } from './database/database.module';
 // Resources modules
 import { ObservationsModule } from './observations/observations.module';
 import { TransectsModule } from './transects/transects.module';
+import { QuadratsModule } from './quadrats/quadrats.module';
+
 import { SitesModule } from './sites/sites.module';
 
 // Services modules
@@ -20,6 +22,7 @@ import { WeatherModule } from './services/weather/weather.module';
     ObservationsModule,
     SitesModule,
     TransectsModule,
+    QuadratsModule,
     WeatherModule,
   ],
   controllers: [AppController],

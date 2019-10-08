@@ -19,6 +19,7 @@ async function bootstrap() {
     .setBasePath(BASE_API_PATH)
     .addTag('observations')
     .addTag('transects')
+    .addTag('quadrats')
     .addTag('sites')
     .build();
   const document = SwaggerModule.createDocument(app, options);
