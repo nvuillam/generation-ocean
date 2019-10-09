@@ -2,13 +2,14 @@
 
 import * as mongoose from 'mongoose';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { AlguaeAnalysisSchema } from '../../ref/alguae-descriptions/alguae-description.model';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const QuadratSchema = new mongoose.Schema({
   name: { type: String, required: true },
   transect_id: { type: ObjectId, required: true, ref: 'Transect' },
-  alguaes: { type: Array },
+  alguaes: { type: [AlguaeAnalysisSchema] },
   created_at: { type: Date, default: Date.now },
   additional_info: String,
 });
@@ -31,8 +32,8 @@ export class QuadratDTO {
   transect_id: string;
   @ApiModelProperty({
     example: [
-      { _id: 'xxxxxx', code: 'xxxxxx', abundance_index: 4 },
-      { _id: 'yyyyyyy', code: 'yyyyyyy', abundance_index: 2 },
+      { description_id: 'xxxxxx', code: 'xxxxxx', abundance_index: 4 },
+      { description_id: 'yyyyyyy', code: 'yyyyyyy', abundance_index: 2 },
     ],
   })
   alguaes: any[];
@@ -41,3 +42,5 @@ export class QuadratDTO {
   @ApiModelProperty({ example: 'Tout commentaire additionnel sur le quadrat' })
   additional_info: string;
 }
+
+

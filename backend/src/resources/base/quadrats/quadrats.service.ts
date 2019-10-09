@@ -3,13 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Quadrat } from './quadrat.model';
+import { AlguaeAnalysis, AlguaeAnalysisDTO } from '../../ref/alguae-descriptions/alguae-description.model';
 
 @Injectable()
 export class QuadratsService {
   constructor(
     @InjectModel('Quadrat')
     private readonly quadratModel: Model<Quadrat>,
-  ) {}
+  ) { }
 
   async insertQuadrat(quadratData: Quadrat) {
     const newQuadrat: Quadrat = new this.quadratModel(quadratData);
@@ -35,6 +36,34 @@ export class QuadratsService {
       .exec();
     return quadrats;
   }
+
+  // List alguaes of a quadrat
+  async getSingleQuadratAlguaes(quadratId: string) {
+    const quadrat: Quadrat = await this.findQuadrat(quadratId);
+    return quadrat.alguaes || [];
+  }
+
+  // Upsert alguae analysis in quadrat alguaes list
+  async updateQuadratUpsertAlguaeAnalysis(quadratId: string, alguaeCode: string, alguaeAnalysis: AlguaeAnalysisDTO) {
+    const quadrat: Quadrat = await this.findQuadrat(quadratId);
+    quadrat.alguaes = quadrat.alguaes || [];
+    let existingAlguaeAnalysis = quadrat.alguaes.find(v => v['code'] === alguaeCode);
+
+    if (existingAlguaeAnalysis) {
+      // AlguaeAnalysis existing: replace it
+      Object.keys(alguaeAnalysis).forEach(key => existingAlguaeAnalysis[key] = alguaeAnalysis[key]); // copy values of alguaeAnalysis on existingAlguaeAnalysis
+      const index = quadrat.alguaes.findIndex(v => v['code'] === alguaeCode);
+      quadrat.alguaes[index] = existingAlguaeAnalysis;
+      alguaeAnalysis = existingAlguaeAnalysis
+    }
+    else {      // AlguaeAnalysis not existing : add it
+      alguaeAnalysis.code = alguaeCode;
+      quadrat.alguaes.push(alguaeAnalysis);
+    }
+    quadrat.save();
+    return alguaeAnalysis;
+  }
+
 
   private async findQuadrat(id: string): Promise<Quadrat> {
     let quadrat;

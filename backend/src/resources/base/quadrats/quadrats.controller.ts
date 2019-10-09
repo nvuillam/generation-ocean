@@ -11,6 +11,7 @@ import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ResourceRootController } from '../../resource.root.controller';
 import { QuadratsService } from './quadrats.service';
 import { Quadrat, QuadratDTO } from './quadrat.model';
+import { AlguaeAnalysis, AlguaeAnalysisDTO } from '../../ref/alguae-descriptions/alguae-description.model';
 
 @ApiUseTags('quadrats')
 @Controller('quadrats')
@@ -19,6 +20,7 @@ export class QuadratsController extends ResourceRootController {
     super();
   }
 
+  // Create new Quadrat
   @Post()
   @ApiOperation({ title: 'Create a new quadrat' })
   @ApiResponse({
@@ -33,6 +35,7 @@ export class QuadratsController extends ResourceRootController {
     return quadratCreated;
   }
 
+  // Get Quadrat data
   @Get(':id')
   @ApiOperation({ title: 'Get a single quadrat' })
   @ApiResponse({
@@ -44,6 +47,7 @@ export class QuadratsController extends ResourceRootController {
     return this.quadratsService.getSingleQuadrat(quadratId);
   }
 
+  // Update an existing Quadrat
   @Put(':id')
   @ApiOperation({ title: 'Update an existing quadrat' })
   @ApiResponse({
@@ -60,5 +64,34 @@ export class QuadratsController extends ResourceRootController {
       (quadratData as unknown) as Quadrat,
     );
     return quadrat;
+  }
+
+  // List alguaes of a Quadrat
+  @Get(':id/alguaes')
+  @ApiOperation({ title: 'Get list of alguaes recorded on a quadrat' })
+  @ApiResponse({
+    status: 200,
+    type: AlguaeAnalysisDTO,
+    isArray: true,
+    description: 'The record has been successfully retrieved',
+  })
+  getQuadratAlguaes(@Param('id') quadratId: string) {
+    return this.quadratsService.getSingleQuadratAlguaes(quadratId);
+  }
+
+  // Upsert alguae analysis in quadrat alguaes list
+  @Post(':id/alguaes/:alguaeCode')
+  @ApiOperation({ title: 'Post a new alguae analysis on a quadrat' })
+  @ApiResponse({
+    status: 200,
+    type: AlguaeAnalysisDTO,
+    isArray: true,
+    description: 'The record has been successfully updated',
+  })
+  updateQuadratAlguae(
+    @Param('id') quadratId: string,
+    @Param('alguaeCode') alguaeCode: string,
+    @Body() alguaeAnalysis: AlguaeAnalysisDTO) {
+    return this.quadratsService.updateQuadratUpsertAlguaeAnalysis(quadratId, alguaeCode, alguaeAnalysis);
   }
 }
