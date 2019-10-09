@@ -7,7 +7,7 @@ import {
   Put
 } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ResourceRootController } from '../resource.root.controller'
+import { ResourceRootController } from '../../resource.root.controller'
 
 import { ObservationsService } from './observations.service';
 import { Observation, ObservationDTO } from './observation.model';

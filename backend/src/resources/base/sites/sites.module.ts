@@ -8,7 +8,7 @@ import { SiteSchema } from './site.model';
 
 // Dependencies
 import { ObservationsModule } from '../observations/observations.module';
-import { WeatherModule } from '../../services/weather/weather.module';
+import { WeatherModule } from '../../../services/weather/weather.module';
 
 @Module({
   imports: [

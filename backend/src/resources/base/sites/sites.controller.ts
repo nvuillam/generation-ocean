@@ -9,7 +9,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiImplicitQuery, ApiResponse } from '@nestjs/swagger';
-import { ResourceRootController } from '../resource.root.controller'
+import { ResourceRootController } from '../../resource.root.controller'
 
 import { SitesService } from './sites.service';
 import { Site, SiteDTO } from './site.model';
