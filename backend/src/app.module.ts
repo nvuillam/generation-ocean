@@ -15,7 +15,7 @@ import { UsersGroupsModule } from './resources/base/users-groups-root/user-group
 // Ref resources modules
 import { AlguaeDescriptionsModule } from './resources/ref/alguae-descriptions/alguae-descriptions.module';
 
-// Services modules 
+// Services modules
 import { WeatherModule } from './services/weather/weather.module';
 
 @Module({
@@ -37,4 +37,4 @@ import { WeatherModule } from './services/weather/weather.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

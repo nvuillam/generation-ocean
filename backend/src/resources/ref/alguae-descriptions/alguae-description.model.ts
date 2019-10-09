@@ -16,7 +16,7 @@ export const AlguaeDescriptionSchema = new mongoose.Schema({
 
 export interface AlguaeDescription extends mongoose.Document {
   _id: string;
-  code: string,
+  code: string;
   name: string;
   description: string;
   picture_url: string;
@@ -33,37 +33,15 @@ export class AlguaeDescriptionDTO {
   code: string;
   @ApiModelProperty({ example: 'Some blue alguae' })
   description: string;
-  @ApiModelProperty({ example: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Alpaca_headshot.jpg/260px-Alpaca_headshot.jpg' })
+  @ApiModelProperty({
+    example:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Alpaca_headshot.jpg/260px-Alpaca_headshot.jpg',
+  })
   picture_url: string;
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })
   created_at: Date;
   @ApiModelProperty({
-    example: "Tout commentaire additionnel sur le site d'observation",
+    example: 'Tout commentaire additionnel sur le site d\'observation',
   })
   additional_info: string;
-}
-
-export const AlguaeAnalysisSchema = new mongoose.Schema({
-  _id: { type: String },
-  description_id: { type: String },
-  code: { type: String, required: true },
-  abundance_index: { type: Number },
-});
-
-export interface AlguaeAnalysis extends mongoose.Document {
-  _id: string;
-  description_id: string;
-  code: string;
-  abundance_index: number;
-}
-
-export class AlguaeAnalysisDTO {
-  @ApiModelProperty({ example: '5d9a3ad6f9967419acde0731' })
-  _id: string;
-  @ApiModelProperty({ example: '5d9a3ad6f9967419acde0731' })
-  description_id: string;
-  @ApiModelProperty({ example: 'xxxxxx' })
-  code: string;
-  @ApiModelProperty({ example: 4 })
-  abundance_index: number;
 }

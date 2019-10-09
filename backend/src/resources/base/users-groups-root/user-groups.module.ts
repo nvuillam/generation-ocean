@@ -10,10 +10,10 @@ import { ObservationsModule } from '../observations/observations.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
-    ObservationsModule
+    ObservationsModule,
   ],
   exports: [UsersService],
   controllers: [UsersController],
   providers: [UsersService],
 })
-export class UsersGroupsModule { }
+export class UsersGroupsModule {}

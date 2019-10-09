@@ -2,7 +2,7 @@
 
 import * as mongoose from 'mongoose';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { AlguaeAnalysisSchema } from '../../ref/alguae-descriptions/alguae-description.model';
+import { AlguaeAnalysisSchema } from '../../ref/alguae-descriptions/alguae-analysis.model';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -42,5 +42,3 @@ export class QuadratDTO {
   @ApiModelProperty({ example: 'Tout commentaire additionnel sur le quadrat' })
   additional_info: string;
 }
-
-

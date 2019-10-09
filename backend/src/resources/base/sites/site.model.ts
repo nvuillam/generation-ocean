@@ -34,7 +34,7 @@ export class SiteDTO {
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })
   created_at: Date;
   @ApiModelProperty({
-    example: "Tout commentaire additionnel sur le site d'observation",
+    example: 'Tout commentaire additionnel sur le site d\'observation',
   })
   additional_info: string;
 }

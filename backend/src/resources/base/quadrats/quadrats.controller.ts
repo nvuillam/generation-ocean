@@ -11,7 +11,10 @@ import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ResourceRootController } from '../../resource.root.controller';
 import { QuadratsService } from './quadrats.service';
 import { Quadrat, QuadratDTO } from './quadrat.model';
-import { AlguaeAnalysis, AlguaeAnalysisDTO } from '../../ref/alguae-descriptions/alguae-description.model';
+import {
+  AlguaeAnalysis,
+  AlguaeAnalysisDTO,
+} from '../../ref/alguae-descriptions/alguae-analysis.model';
 
 @ApiUseTags('quadrats')
 @Controller('quadrats')
@@ -91,7 +94,12 @@ export class QuadratsController extends ResourceRootController {
   updateQuadratAlguae(
     @Param('id') quadratId: string,
     @Param('alguaeCode') alguaeCode: string,
-    @Body() alguaeAnalysis: AlguaeAnalysisDTO) {
-    return this.quadratsService.updateQuadratUpsertAlguaeAnalysis(quadratId, alguaeCode, alguaeAnalysis);
+    @Body() alguaeAnalysis: AlguaeAnalysisDTO,
+  ) {
+    return this.quadratsService.updateQuadratUpsertAlguaeAnalysis(
+      quadratId,
+      alguaeCode,
+      alguaeAnalysis,
+    );
   }
 }

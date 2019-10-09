@@ -59,7 +59,7 @@ export class ObservationDTO {
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })
   started_at: Date;
   @ApiModelProperty({
-    example: "Tout commentaire additionnel sur l'observation",
+    example: 'Tout commentaire additionnel sur l\'observation',
   })
   additional_info: string;
   @ApiModelProperty()

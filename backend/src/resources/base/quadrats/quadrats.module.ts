@@ -6,15 +6,15 @@ import { QuadratsController } from './quadrats.controller';
 import { QuadratsService } from './quadrats.service';
 import { QuadratSchema } from './quadrat.model';
 
-import { AlguaeDescriptionsModule } from '../../ref/alguae-descriptions/alguae-descriptions.module'
+import { AlguaeDescriptionsModule } from '../../ref/alguae-descriptions/alguae-descriptions.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Quadrat', schema: QuadratSchema }]),
-    AlguaeDescriptionsModule
+    AlguaeDescriptionsModule,
   ],
   exports: [QuadratsService],
   controllers: [QuadratsController],
   providers: [QuadratsService],
 })
-export class QuadratsModule { }
+export class QuadratsModule {}
