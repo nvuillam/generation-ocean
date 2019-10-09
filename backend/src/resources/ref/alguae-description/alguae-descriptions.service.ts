@@ -6,19 +6,17 @@ import { AlguaeDescription } from './alguae-description.model';
 
 @Injectable()
 export class AlguaeDescriptionsService {
-    constructor(
-        @InjectModel('AlguaeDescription')
-        private readonly siteModel: Model<AlguaeDescription>,
-    ) { }
+  constructor(
+    @InjectModel('AlguaeDescription')
+    private readonly siteModel: Model<AlguaeDescription>,
+  ) {}
 
-    async getAlguaeDescriptions(params: object) {
-        const alguaes = []
-        return alguaes;
-    }
+  async getAlguaeDescriptions(params: object) {
+    const alguaes = [];
+    return alguaes;
+  }
 
-    async getSingleAlguaeDescription(siteId: string) {
-        return {};
-    }
-
-
+  async getSingleAlguaeDescription(siteId: string) {
+    return {};
+  }
 }

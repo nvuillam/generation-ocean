@@ -12,16 +12,12 @@ import { WeatherModule } from '../../../services/weather/weather.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'Site', schema: SiteSchema },
-    ]),
+    MongooseModule.forFeature([{ name: 'Site', schema: SiteSchema }]),
     forwardRef(() => ObservationsModule),
     WeatherModule,
   ],
-  exports: [
-    SitesService,
-  ],
+  exports: [SitesService],
   controllers: [SitesController],
   providers: [SitesService],
 })
-export class SitesModule { }
+export class SitesModule {}

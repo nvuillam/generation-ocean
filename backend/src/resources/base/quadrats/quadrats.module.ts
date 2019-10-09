@@ -8,12 +8,10 @@ import { QuadratSchema } from './quadrat.model';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'Quadrat', schema: QuadratSchema },
-    ]),
+    MongooseModule.forFeature([{ name: 'Quadrat', schema: QuadratSchema }]),
   ],
   exports: [QuadratsService],
   controllers: [QuadratsController],
   providers: [QuadratsService],
 })
-export class QuadratsModule { }
+export class QuadratsModule {}

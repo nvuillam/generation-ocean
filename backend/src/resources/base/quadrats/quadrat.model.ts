@@ -29,7 +29,12 @@ export class QuadratDTO {
   name: string;
   @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
   transect_id: string;
-  @ApiModelProperty({ example: [{ name: 'XXX', abundance_index: 4 }, { name: 'YYY', abundance_index: 2 }] })
+  @ApiModelProperty({
+    example: [
+      { name: 'XXX', abundance_index: 4 },
+      { name: 'YYY', abundance_index: 2 },
+    ],
+  })
   alguae: any[];
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })
   created_at: Date;

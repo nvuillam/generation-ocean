@@ -7,13 +7,13 @@ import { AlguaeDescriptionsService } from './alguae-descriptions.service';
 import { AlguaeDescriptionSchema } from './alguae-description.model';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([
-            { name: 'AlguaeDescription', schema: AlguaeDescriptionSchema },
-        ]),
-    ],
-    exports: [AlguaeDescriptionsService],
-    controllers: [AlguaeDescriptionsController],
-    providers: [AlguaeDescriptionsService],
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'AlguaeDescription', schema: AlguaeDescriptionSchema },
+    ]),
+  ],
+  exports: [AlguaeDescriptionsService],
+  controllers: [AlguaeDescriptionsController],
+  providers: [AlguaeDescriptionsService],
 })
-export class AlguaeDescriptionsModule { }
+export class AlguaeDescriptionsModule {}

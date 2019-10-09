@@ -8,8 +8,13 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { ApiUseTags, ApiOperation, ApiImplicitQuery, ApiResponse } from '@nestjs/swagger';
-import { ResourceRootController } from '../../resource.root.controller'
+import {
+  ApiUseTags,
+  ApiOperation,
+  ApiImplicitQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
+import { ResourceRootController } from '../../resource.root.controller';
 
 import { SitesService } from './sites.service';
 import { Site, SiteDTO } from './site.model';
@@ -20,9 +25,11 @@ import { ObservationDTO } from '../observations/observation.model';
 @ApiUseTags('sites')
 @Controller('sites')
 export class SitesController extends ResourceRootController {
-  constructor(private readonly sitesService: SitesService,
-    private readonly observationsService: ObservationsService) {
-    super()
+  constructor(
+    private readonly sitesService: SitesService,
+    private readonly observationsService: ObservationsService,
+  ) {
+    super();
   }
 
   @Post()
@@ -33,24 +40,24 @@ export class SitesController extends ResourceRootController {
     description: 'The record has been successfully created.',
   })
   async addSite(@Body() siteData: SiteDTO) {
-    const siteCreated = await this.sitesService.insertSite(
-      siteData as Site,
-    );
+    const siteCreated = await this.sitesService.insertSite(siteData as Site);
     return siteCreated;
   }
 
   @Get()
   @ApiOperation({ title: 'Find sites' })
-  @ApiImplicitQuery({ name: 'name', required: false, description: 'Name filter' })
+  @ApiImplicitQuery({
+    name: 'name',
+    required: false,
+    description: 'Name filter',
+  })
   @ApiResponse({
     status: 200,
     type: SiteDTO,
     isArray: true,
     description: 'Liste of found sites',
   })
-  async getSites(
-    @Query('name') name: string,
-  ) {
+  async getSites(@Query('name') name: string) {
     const params: { [key: string]: any } = {};
     if (name) {
       params.name = { $regex: '.*' + name + '.*' };
@@ -77,10 +84,7 @@ export class SitesController extends ResourceRootController {
     type: SiteDTO,
     description: 'The record has been successfully updaated',
   })
-  async updateSite(
-    @Param('id') siteId: string,
-    @Body() siteData: SiteDTO,
-  ) {
+  async updateSite(@Param('id') siteId: string, @Body() siteData: SiteDTO) {
     const site: Site = await this.sitesService.updateSite(
       siteId,
       siteData as Site,

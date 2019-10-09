@@ -14,13 +14,13 @@ export class ObservationsService {
     private readonly observationModel: Model<Observation>,
     private readonly sitesService: SitesService,
     private readonly weatherService: WeatherService,
-  ) { }
+  ) {}
 
   async insertObservation(observationData: Observation) {
     const newObservation: Observation = new this.observationModel(
       observationData,
     );
-    const result = await newObservation.save().then((savedObservation) => {
+    const result = await newObservation.save().then(savedObservation => {
       return this.manageObservationWeatherData(savedObservation);
     });
     return result;
@@ -36,19 +36,23 @@ export class ObservationsService {
       observationId,
     );
     updatedObservation.set(observationData);
-    const result = updatedObservation.save().then((savedObservation) => {
+    const result = updatedObservation.save().then(savedObservation => {
       return this.manageObservationWeatherData(savedObservation);
     });
     return result;
   }
 
   async getObservationsBySite(siteId: string) {
-    const observations = await this.observationModel.find({ site_id: siteId }).exec();
+    const observations = await this.observationModel
+      .find({ site_id: siteId })
+      .exec();
     return observations;
   }
 
   async getObservationsByUser(userId: string) {
-    const observations = await this.observationModel.find({ user_id: userId }).exec();
+    const observations = await this.observationModel
+      .find({ user_id: userId })
+      .exec();
     return observations;
   }
 
@@ -74,11 +78,18 @@ export class ObservationsService {
   }
 
   // Add weather data on observation ( only if GPS location is defined and weather has not been retrieved yet)
-  async manageObservationWeatherData(observation: Observation): Promise<Observation> {
+  async manageObservationWeatherData(
+    observation: Observation,
+  ): Promise<Observation> {
     if (observation.site_id != null && observation.weather == null) {
-      const site: Site = await this.sitesService.getSingleSite(observation.site_id);
+      const site: Site = await this.sitesService.getSingleSite(
+        observation.site_id,
+      );
       if (site.pos_latitude != null && site.pos_longitude != null) {
-        const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(site.pos_latitude, site.pos_longitude);
+        const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(
+          site.pos_latitude,
+          site.pos_longitude,
+        );
         // If weather info found, set it on the Observation
         if (localWeatherInfo) {
           observation.weather = localWeatherInfo;

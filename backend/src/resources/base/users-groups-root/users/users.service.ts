@@ -9,12 +9,10 @@ export class UsersService {
   constructor(
     @InjectModel('User')
     private readonly userModel: Model<User>,
-  ) { }
+  ) {}
 
   async insertUser(userData: User) {
-    const newUser: User = new this.userModel(
-      userData,
-    );
+    const newUser: User = new this.userModel(userData);
     const result = await newUser.save();
     return result;
   }
@@ -30,9 +28,7 @@ export class UsersService {
   }
 
   async updateUser(userId: string, userData: User) {
-    const updatedUser: User = await this.findUser(
-      userId,
-    );
+    const updatedUser: User = await this.findUser(userId);
     updatedUser.set(userData);
     const result = updatedUser.save();
     return result;

@@ -9,12 +9,10 @@ export class TransectsService {
   constructor(
     @InjectModel('Transect')
     private readonly transectModel: Model<Transect>,
-  ) { }
+  ) {}
 
   async insertTransect(transectData: Transect) {
-    const newTransect: Transect = new this.transectModel(
-      transectData,
-    );
+    const newTransect: Transect = new this.transectModel(transectData);
     const result = await newTransect.save();
     return result;
   }
@@ -25,16 +23,16 @@ export class TransectsService {
   }
 
   async updateTransect(transectId: string, transectData: Transect) {
-    const updatedTransect: Transect = await this.findTransect(
-      transectId,
-    );
+    const updatedTransect: Transect = await this.findTransect(transectId);
     updatedTransect.set(transectData);
     const result = updatedTransect.save();
     return result;
   }
 
   async getTransectsByObservation(observationId: string) {
-    const transects = await this.transectModel.find({ observation_id: observationId }).exec();
+    const transects = await this.transectModel
+      .find({ observation_id: observationId })
+      .exec();
     return transects;
   }
 
@@ -50,5 +48,4 @@ export class TransectsService {
     }
     return transect;
   }
-
 }

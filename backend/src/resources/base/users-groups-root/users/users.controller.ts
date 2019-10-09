@@ -8,21 +8,28 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { ApiUseTags, ApiOperation, ApiImplicitQuery, ApiResponse } from '@nestjs/swagger';
-import { ResourceRootController } from '../../../resource.root.controller'
+import {
+  ApiUseTags,
+  ApiOperation,
+  ApiImplicitQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
+import { ResourceRootController } from '../../../resource.root.controller';
 
 import { UsersService } from './users.service';
 import { User, UserDTO } from './user.model';
 
-import { ObservationsService } from '../../observations/observations.service'
+import { ObservationsService } from '../../observations/observations.service';
 import { ObservationDTO } from '../../observations/observation.model';
 
 @ApiUseTags('users')
 @Controller('users')
 export class UsersController extends ResourceRootController {
-  constructor(private readonly usersService: UsersService,
-    private readonly observationsService: ObservationsService) {
-    super()
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly observationsService: ObservationsService,
+  ) {
+    super();
   }
 
   @Post()
@@ -33,24 +40,24 @@ export class UsersController extends ResourceRootController {
     description: 'The record has been successfully created.',
   })
   async addUser(@Body() userData: UserDTO) {
-    const userCreated = await this.usersService.insertUser(
-      userData as User,
-    );
+    const userCreated = await this.usersService.insertUser(userData as User);
     return userCreated;
   }
 
   @Get()
   @ApiOperation({ title: 'Find users' })
-  @ApiImplicitQuery({ name: 'name', required: false, description: 'Name filter' })
+  @ApiImplicitQuery({
+    name: 'name',
+    required: false,
+    description: 'Name filter',
+  })
   @ApiResponse({
     status: 200,
     type: UserDTO,
     isArray: true,
     description: 'Liste of found users',
   })
-  async getUsers(
-    @Query('name') name: string,
-  ) {
+  async getUsers(@Query('name') name: string) {
     const params: { [key: string]: any } = {};
     if (name) {
       params.name = { $regex: '.*' + name + '.*' };
@@ -77,10 +84,7 @@ export class UsersController extends ResourceRootController {
     type: UserDTO,
     description: 'The record has been successfully updaated',
   })
-  async updateUser(
-    @Param('id') userId: string,
-    @Body() userData: UserDTO,
-  ) {
+  async updateUser(@Param('id') userId: string, @Body() userData: UserDTO) {
     const user: User = await this.usersService.updateUser(
       userId,
       userData as User,

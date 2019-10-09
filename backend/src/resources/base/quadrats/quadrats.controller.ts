@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ResourceRootController } from '../../resource.root.controller'
+import { ResourceRootController } from '../../resource.root.controller';
 import { QuadratsService } from './quadrats.service';
 import { Quadrat, QuadratDTO } from './quadrat.model';
 
@@ -16,7 +16,7 @@ import { Quadrat, QuadratDTO } from './quadrat.model';
 @Controller('quadrats')
 export class QuadratsController extends ResourceRootController {
   constructor(private readonly quadratsService: QuadratsService) {
-    super()
+    super();
   }
 
   @Post()
@@ -28,7 +28,7 @@ export class QuadratsController extends ResourceRootController {
   })
   async addQuadrat(@Body() quadratData: QuadratDTO) {
     const quadratCreated = await this.quadratsService.insertQuadrat(
-      quadratData as unknown as Quadrat,
+      (quadratData as unknown) as Quadrat,
     );
     return quadratCreated;
   }
@@ -57,9 +57,8 @@ export class QuadratsController extends ResourceRootController {
   ) {
     const quadrat: Quadrat = await this.quadratsService.updateQuadrat(
       quadratId,
-      quadratData as unknown as Quadrat,
+      (quadratData as unknown) as Quadrat,
     );
     return quadrat;
   }
-
 }

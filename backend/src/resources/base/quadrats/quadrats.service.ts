@@ -9,12 +9,10 @@ export class QuadratsService {
   constructor(
     @InjectModel('Quadrat')
     private readonly quadratModel: Model<Quadrat>,
-  ) { }
+  ) {}
 
   async insertQuadrat(quadratData: Quadrat) {
-    const newQuadrat: Quadrat = new this.quadratModel(
-      quadratData,
-    );
+    const newQuadrat: Quadrat = new this.quadratModel(quadratData);
     const result = await newQuadrat.save();
     return result;
   }
@@ -25,16 +23,16 @@ export class QuadratsService {
   }
 
   async updateQuadrat(quadratId: string, quadratData: Quadrat) {
-    const updatedQuadrat: Quadrat = await this.findQuadrat(
-      quadratId,
-    );
+    const updatedQuadrat: Quadrat = await this.findQuadrat(quadratId);
     updatedQuadrat.set(quadratData);
     const result = updatedQuadrat.save();
     return result;
   }
 
   async getQuadratsByTransect(transectId: string) {
-    const quadrats = await this.quadratModel.find({ transect_id: transectId }).exec();
+    const quadrats = await this.quadratModel
+      .find({ transect_id: transectId })
+      .exec();
     return quadrats;
   }
 
@@ -50,5 +48,4 @@ export class QuadratsService {
     }
     return quadrat;
   }
-
 }

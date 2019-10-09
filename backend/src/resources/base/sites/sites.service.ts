@@ -9,12 +9,10 @@ export class SitesService {
   constructor(
     @InjectModel('Site')
     private readonly siteModel: Model<Site>,
-  ) { }
+  ) {}
 
   async insertSite(siteData: Site) {
-    const newSite: Site = new this.siteModel(
-      siteData,
-    );
+    const newSite: Site = new this.siteModel(siteData);
     const result = await newSite.save();
     return result;
   }
@@ -30,9 +28,7 @@ export class SitesService {
   }
 
   async updateSite(siteId: string, siteData: Site) {
-    const updatedSite: Site = await this.findSite(
-      siteId,
-    );
+    const updatedSite: Site = await this.findSite(siteId);
     updatedSite.set(siteData);
     const result = updatedSite.save();
     return result;

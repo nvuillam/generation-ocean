@@ -8,10 +8,14 @@ import { Weather } from './weather.model';
 export class WeatherService {
   constructor(
     private config: ConfigService,
-    private openWeatherMapService: OpenWeatherMapService) { }
+    private openWeatherMapService: OpenWeatherMapService,
+  ) {}
 
   // Call related weather info service
-  async getLocalWeatherInfo(posLatitude: number, posLongitude: number): Promise<Weather> {
+  async getLocalWeatherInfo(
+    posLatitude: number,
+    posLongitude: number,
+  ): Promise<Weather> {
     const weatherProviderList = this.getWeatherApiProvider();
     let weather: Weather = {
       raw_results: {},
@@ -19,9 +23,14 @@ export class WeatherService {
     };
     // OpenWeatherMap.com
     if (weatherProviderList.includes('openweathermap')) {
-      const rawData: any = await this.openWeatherMapService.getLocalWeatherInfo(posLatitude, posLongitude);
+      const rawData: any = await this.openWeatherMapService.getLocalWeatherInfo(
+        posLatitude,
+        posLongitude,
+      );
       weather.raw_results.openweathermap = rawData;
-      const weatherConvertedData: any = await this.openWeatherMapService.convertRawToGenerationOceanFormat(rawData);
+      const weatherConvertedData: any = await this.openWeatherMapService.convertRawToGenerationOceanFormat(
+        rawData,
+      );
       weather = {
         ...weather,
         ...weatherConvertedData,
@@ -39,5 +48,4 @@ export class WeatherService {
       return ['openweathermap'];
     }
   }
-
 }

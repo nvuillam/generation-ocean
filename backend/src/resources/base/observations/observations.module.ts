@@ -24,4 +24,4 @@ import { WeatherModule } from '../../../services/weather/weather.module';
   controllers: [ObservationsController],
   providers: [ObservationsService],
 })
-export class ObservationsModule { }
+export class ObservationsModule {}
