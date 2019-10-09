@@ -6,10 +6,32 @@ import { AlguaeAnalysisSchema } from '../../ref/alguae-descriptions/alguae-analy
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+function isRequiredForQuadratToBeAssigned() {
+  return this.status != null && this.status !== 'draft';
+}
+function isRequiredForQuadratToBeValidated() {
+  return this.status != null && this.status !== 'draft';
+}
+
 export const QuadratSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  transect_id: { type: ObjectId, required: true, ref: 'Transect' },
-  alguaes: { type: [AlguaeAnalysisSchema] },
+  name: {
+    type: String,
+    required: isRequiredForQuadratToBeAssigned,
+  },
+  transect_id: {
+    type: ObjectId,
+    required: true,
+    ref: 'Transect',
+  },
+  status: {
+    type: String,
+    enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
+    default: 'draft',
+  },
+  alguaes: {
+    type: [AlguaeAnalysisSchema],
+    required: isRequiredForQuadratToBeValidated,
+  },
   created_at: { type: Date, default: Date.now },
   additional_info: String,
 });
@@ -18,6 +40,7 @@ export interface Quadrat extends mongoose.Document {
   _id: string;
   name: string;
   transect_id: string;
+  status: string;
   alguaes: any[];
   created_at: Date;
   additional_info: string;
@@ -30,6 +53,11 @@ export class QuadratDTO {
   name: string;
   @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
   transect_id: string;
+  @ApiModelProperty({
+    enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
+    example: 'draft',
+  })
+  status: string;
   @ApiModelProperty({
     example: [
       { description_id: 'xxxxxx', code: 'xxxxxx', abundance_index: 4 },

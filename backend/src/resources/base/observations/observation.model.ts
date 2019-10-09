@@ -6,21 +6,50 @@ import { Weather, WeatherDTO } from '../../../services/weather/weather.model';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+function isRequiredForObservationToStart() {
+  return this.status != null && this.status !== 'draft';
+}
+
 export const ObservationSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  site_id: { type: ObjectId, ref: 'Site' },
-  group_id: ObjectId,
-  user_id: { type: ObjectId, required: true, ref: 'User' },
-  protocol: { type: String, enum: ['ALAMER'] },
+  name: {
+    type: String,
+    required: true,
+  },
+  site_id: {
+    type: ObjectId,
+    ref: 'Site',
+    required: isRequiredForObservationToStart,
+  },
+  group_id: {
+    type: ObjectId,
+    required: false, //isRequiredForObservationToStart, //uncomment when groups are implemented
+  },
+  user_id: {
+    type: ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  protocol: {
+    type: String,
+    enum: ['ALAMER'],
+    required: isRequiredForObservationToStart,
+  },
   status: {
     type: String,
     enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
+    default: 'draft',
   },
-  created_at: { type: Date, default: Date.now },
-  started_at: { type: Date },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  started_at: {
+    type: Date,
+  },
   additional_info: String,
-
-  weather: { type: Map },
+  weather: {
+    type: Map,
+  },
 });
 
 export interface Observation extends mongoose.Document {

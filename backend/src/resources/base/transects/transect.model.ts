@@ -5,20 +5,70 @@ import { ApiModelProperty } from '@nestjs/swagger';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+function isRequiredForValidation() {
+  return (
+    this.status != null &&
+    ['validation_requested', 'validated'].includes(this.status)
+  );
+}
+
 export const TransectSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  observation_id: { type: ObjectId, required: true, ref: 'Observation' },
-  site_id: { type: ObjectId, required: true, ref: 'Site' },
-  start_pos_latitude: { type: Number },
-  start_pos_longitude: { type: Number },
-  end_pos_latitude: { type: Number },
-  end_pos_longitude: { type: Number },
-  sifting_trace: { type: Boolean },
-  motor_access: { type: Boolean },
-  foreshore_cumulated_length_m: { type: Number },
-  foreshore_average_width_m: { type: Number },
-  foreshore_average_thickness_cm: { type: Number },
-  created_at: { type: Date, default: Date.now },
+  name: {
+    type: String,
+    required: true,
+  },
+  observation_id: {
+    type: ObjectId,
+    ref: 'Observation',
+    required: true,
+  },
+  site_id: {
+    type: ObjectId,
+    ref: 'Site',
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
+    default: 'draft',
+  },
+  start_pos_latitude: {
+    type: Number,
+    required: isRequiredForValidation,
+  },
+  start_pos_longitude: {
+    type: Number,
+    required: isRequiredForValidation,
+  },
+  end_pos_latitude: {
+    type: Number,
+    required: isRequiredForValidation,
+  },
+  end_pos_longitude: {
+    type: Number,
+    required: isRequiredForValidation,
+  },
+  sifting_trace: {
+    type: Boolean,
+    required: isRequiredForValidation,
+  },
+  motor_access: {
+    type: Boolean,
+    required: isRequiredForValidation,
+  },
+  foreshore_cumulated_length_m: {
+    type: Number,
+  },
+  foreshore_average_width_m: {
+    type: Number,
+  },
+  foreshore_average_thickness_cm: {
+    type: Number,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
   additional_info: String,
 });
 
@@ -27,6 +77,7 @@ export interface Transect extends mongoose.Document {
   name: string;
   observation_id: string;
   site_id: string;
+  status: string;
   start_pos_latitude: number;
   start_pos_longitude: number;
   end_pos_latitude: number;
@@ -51,6 +102,11 @@ export class TransectDTO {
   observation_id: string;
   @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
   site_id: string;
+  @ApiModelProperty({
+    enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
+    example: 'draft',
+  })
+  status: string;
   @ApiModelProperty({ example: 48.8025884 })
   start_pos_latitude: number;
   @ApiModelProperty({ example: 2.1847466 })
