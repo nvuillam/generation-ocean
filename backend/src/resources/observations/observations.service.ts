@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { Observation } from './observation.model';
 import { Site } from '../sites/site.model';
 import { SitesService } from '../sites/sites.service';
-import { WeatherService } from '../services/weather/weather.service';
+import { WeatherService } from '../../services/weather/weather.service';
 
 @Injectable()
 export class ObservationsService {

@@ -9,7 +9,7 @@ import { ObservationSchema } from './observation.model';
 // Dependencies
 import { TransectsModule } from '../transects/transects.module';
 import { SitesModule } from '../sites/sites.module';
-import { WeatherModule } from '../services/weather/weather.module';
+import { WeatherModule } from '../../services/weather/weather.module';
 
 @Module({
   imports: [

@@ -8,7 +8,9 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiUseTags, ApiOperation, ApiImplicitQuery, ApiResponse } from '@nestjs/swagger';
+import { ResourceRootController } from '../resource.root.controller'
+
 import { SitesService } from './sites.service';
 import { Site, SiteDTO } from './site.model';
 
@@ -17,9 +19,11 @@ import { ObservationDTO } from '../observations/observation.model';
 
 @ApiUseTags('sites')
 @Controller('sites')
-export class SitesController {
+export class SitesController extends ResourceRootController {
   constructor(private readonly sitesService: SitesService,
-              private readonly observationsService: ObservationsService) { }
+    private readonly observationsService: ObservationsService) {
+    super()
+  }
 
   @Post()
   @ApiOperation({ title: 'Create a new site' })
@@ -37,6 +41,7 @@ export class SitesController {
 
   @Get()
   @ApiOperation({ title: 'Find sites' })
+  @ApiImplicitQuery({ name: 'name', required: false, description: 'Name filter' })
   @ApiResponse({
     status: 200,
     type: SiteDTO,

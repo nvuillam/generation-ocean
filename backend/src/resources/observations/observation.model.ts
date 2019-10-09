@@ -2,7 +2,7 @@
 
 import * as mongoose from 'mongoose';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { Weather, WeatherDTO } from '../services/weather/weather.model';
+import { Weather, WeatherDTO } from '../../services/weather/weather.model';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 

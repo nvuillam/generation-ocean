@@ -8,13 +8,16 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ResourceRootController } from '../resource.root.controller'
 import { QuadratsService } from './quadrats.service';
 import { Quadrat, QuadratDTO } from './quadrat.model';
 
 @ApiUseTags('quadrats')
 @Controller('quadrats')
-export class QuadratsController {
-  constructor(private readonly quadratsService: QuadratsService) { }
+export class QuadratsController extends ResourceRootController {
+  constructor(private readonly quadratsService: QuadratsService) {
+    super()
+  }
 
   @Post()
   @ApiOperation({ title: 'Create a new quadrat' })

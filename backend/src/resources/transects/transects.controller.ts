@@ -8,6 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ResourceRootController } from '../resource.root.controller'
+
 import { TransectsService } from './transects.service';
 import { Transect, TransectDTO } from './transect.model';
 
@@ -16,11 +18,13 @@ import { QuadratDTO } from '../quadrats/quadrat.model';
 
 @ApiUseTags('transects')
 @Controller('transects')
-export class TransectsController {
+export class TransectsController extends ResourceRootController {
   constructor(
     private readonly transectsService: TransectsService,
     private readonly quadratsService: QuadratsService,
-  ) { }
+  ) {
+    super()
+  }
 
   @Post()
   @ApiOperation({ title: 'Create a new transect' })

@@ -6,11 +6,11 @@ import { ConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 
 // Resources modules
-import { ObservationsModule } from './observations/observations.module';
-import { TransectsModule } from './transects/transects.module';
-import { QuadratsModule } from './quadrats/quadrats.module';
+import { ObservationsModule } from './resources/observations/observations.module';
+import { TransectsModule } from './resources/transects/transects.module';
+import { QuadratsModule } from './resources/quadrats/quadrats.module';
 
-import { SitesModule } from './sites/sites.module';
+import { SitesModule } from './resources/sites/sites.module';
 
 // Services modules
 import { WeatherModule } from './services/weather/weather.module';
