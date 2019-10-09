@@ -23,6 +23,8 @@ async function bootstrap() {
     .addTag('transects')
     .addTag('quadrats')
     .addTag('sites')
+    .addTag('users')
+    .addTag('alguae-descriptions')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(`${BASE_API_PATH}/swagger`, app, document);
