@@ -17,4 +17,4 @@ import { OpenWeatherMapService } from './openweathermap/openweathermap.service';
   controllers: [],
   providers: [WeatherService, OpenWeatherMapService],
 })
-export class WeatherModule { }
+export class WeatherModule {}

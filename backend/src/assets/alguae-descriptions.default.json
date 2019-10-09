@@ -1,0 +1,23 @@
+[
+    {
+        "_id": "xxxxxx",
+        "code": "xxxxxx",
+        "name": "XXXXXX",
+        "description": "XXXXXXXXX",
+        "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Alpaca_%2831562329701%29.jpg/220px-Alpaca_%2831562329701%29.jpg"
+    },
+    {
+        "_id": "yyyyyyy",
+        "code": "yyyyyyy",
+        "name": "YYYYYY",
+        "description": "YYYYYYYYY",
+        "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Corazon_Full.jpg/250px-Corazon_Full.jpg"
+    },
+    {
+        "_id": "zzzzzzzzz",
+        "code": "zzzzzzzzz",
+        "name": "ZZZZZZZZZZ",
+        "description": "ZZZZZZZZZZ",
+        "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Alpaca_headshot.jpg/260px-Alpaca_headshot.jpg"
+    }
+]

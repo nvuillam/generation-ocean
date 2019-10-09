@@ -1,13 +1,6 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  Param,
-  Put
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ResourceRootController } from '../resource.root.controller'
+import { ResourceRootController } from '../../resource.root.controller';
 
 import { ObservationsService } from './observations.service';
 import { Observation, ObservationDTO } from './observation.model';
@@ -17,8 +10,10 @@ import { TransectDTO } from '../transects/transect.model';
 @ApiUseTags('observations')
 @Controller('observations')
 export class ObservationsController extends ResourceRootController {
-  constructor(private readonly observationsService: ObservationsService,
-    private readonly transectsService: TransectsService) {
+  constructor(
+    private readonly observationsService: ObservationsService,
+    private readonly transectsService: TransectsService,
+  ) {
     super();
   }
 

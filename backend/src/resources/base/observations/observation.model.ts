@@ -2,14 +2,15 @@
 
 import * as mongoose from 'mongoose';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { Weather, WeatherDTO } from '../../services/weather/weather.model';
+import { Weather, WeatherDTO } from '../../../services/weather/weather.model';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const ObservationSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  site_id: ObjectId,
+  site_id: { type: ObjectId, ref: 'Site' },
   group_id: ObjectId,
+  user_id: { type: ObjectId, required: true, ref: 'User' },
   protocol: { type: String, enum: ['ALAMER'] },
   status: {
     type: String,
@@ -38,7 +39,9 @@ export interface Observation extends mongoose.Document {
 export class ObservationDTO {
   @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
   _id: string;
-  @ApiModelProperty({ example: 'Observations classe de mer école des mouettes' })
+  @ApiModelProperty({
+    example: 'Observations classe de mer école des mouettes',
+  })
   name: string;
   @ApiModelProperty({ example: '5d9a59858d57fa0e34f23a0e' })
   site_id: string;
@@ -55,7 +58,9 @@ export class ObservationDTO {
   created_at: Date;
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })
   started_at: Date;
-  @ApiModelProperty({ example: 'Tout commentaire additionnel sur l\'observation' })
+  @ApiModelProperty({
+    example: 'Tout commentaire additionnel sur l\'observation',
+  })
   additional_info: string;
   @ApiModelProperty()
   weather: WeatherDTO;

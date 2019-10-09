@@ -5,27 +5,36 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 
-// Resources modules
-import { ObservationsModule } from './resources/observations/observations.module';
-import { TransectsModule } from './resources/transects/transects.module';
-import { QuadratsModule } from './resources/quadrats/quadrats.module';
+// Base Resources modules
+import { ObservationsModule } from './resources/base/observations/observations.module';
+import { QuadratsModule } from './resources/base/quadrats/quadrats.module';
+import { SitesModule } from './resources/base/sites/sites.module';
+import { TransectsModule } from './resources/base/transects/transects.module';
+import { UsersGroupsModule } from './resources/base/users-groups-root/user-groups.module';
 
-import { SitesModule } from './resources/sites/sites.module';
+// Ref resources modules
+import { AlguaeDescriptionsModule } from './resources/ref/alguae-descriptions/alguae-descriptions.module';
 
 // Services modules
 import { WeatherModule } from './services/weather/weather.module';
 
 @Module({
   imports: [
+    // Common
     ConfigModule,
     DatabaseModule,
+    // Base resources
     ObservationsModule,
+    QuadratsModule,
     SitesModule,
     TransectsModule,
-    QuadratsModule,
+    UsersGroupsModule,
+    // Ref
+    AlguaeDescriptionsModule,
+    // Services
     WeatherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

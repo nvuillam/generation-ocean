@@ -11,13 +11,11 @@ import { QuadratsModule } from '../quadrats/quadrats.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'Transect', schema: TransectSchema },
-    ]),
+    MongooseModule.forFeature([{ name: 'Transect', schema: TransectSchema }]),
     QuadratsModule,
   ],
   exports: [TransectsService],
   controllers: [TransectsController],
   providers: [TransectsService],
 })
-export class TransectsModule { }
+export class TransectsModule {}

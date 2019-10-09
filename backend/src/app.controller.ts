@@ -9,5 +9,4 @@ export class AppController {
   async getRoot() {
     return '<a href="swagger/">See API Swagger</a>';
   }
-
 }

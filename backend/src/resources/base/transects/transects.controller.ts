@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ResourceRootController } from '../resource.root.controller'
+import { ResourceRootController } from '../../resource.root.controller';
 
 import { TransectsService } from './transects.service';
 import { Transect, TransectDTO } from './transect.model';
@@ -23,7 +23,7 @@ export class TransectsController extends ResourceRootController {
     private readonly transectsService: TransectsService,
     private readonly quadratsService: QuadratsService,
   ) {
-    super()
+    super();
   }
 
   @Post()
@@ -35,7 +35,7 @@ export class TransectsController extends ResourceRootController {
   })
   async addTransect(@Body() transectData: TransectDTO) {
     const transectCreated = await this.transectsService.insertTransect(
-      transectData as unknown as Transect,
+      (transectData as unknown) as Transect,
     );
     return transectCreated;
   }
@@ -64,7 +64,7 @@ export class TransectsController extends ResourceRootController {
   ) {
     const transect: Transect = await this.transectsService.updateTransect(
       transectId,
-      transectData as unknown as Transect,
+      (transectData as unknown) as Transect,
     );
     return transect;
   }
@@ -80,5 +80,4 @@ export class TransectsController extends ResourceRootController {
   getTransectQuadrats(@Param('id') transectId: string) {
     return this.quadratsService.getQuadratsByTransect(transectId);
   }
-
 }
