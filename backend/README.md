@@ -1,3 +1,16 @@
+# Generation Ocean API
+
+## Configuration
+
+### Variables
+
+| Variable                | Description                                        | Example                                                     |
+|-------------------------|----------------------------------------------------|-------------------------------------------------------------|
+| MONGODB_URI             | URI of mongo database                              | mongodb://myuser:mypassword@xxxxx.mlab.com:49127/myDatabase |
+| PROVIDER_WEATHER_LIST   | List of Weather provider APIS, separated by commas | openweathermap                                              |
+| API_ROOT_OPENWEATHERMAP | Root URL of OpenWeatherMap API                     | https://api.openweathermap.org/data/2.5/                    |
+| API_KEY_OPENWEATHERMAP  | Key of OpenWeatherMap API                          | cc28f1dxxxxxxx1d18ac63d78a99                                |
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
