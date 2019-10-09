@@ -8,9 +8,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const ObservationSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  site_id: ObjectId,
+  site_id: { type: ObjectId, ref: 'Site' },
   group_id: ObjectId,
-  user_id: ObjectId,
+  user_id: { type: ObjectId, required: true, ref: 'User' },
   protocol: { type: String, enum: ['ALAMER'] },
   status: {
     type: String,

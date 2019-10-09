@@ -7,8 +7,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const TransectSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  observation_id: { type: ObjectId, required: true },
-  site_id: { type: ObjectId, required: true },
+  observation_id: { type: ObjectId, required: true, ref: 'Observation' },
+  site_id: { type: ObjectId, required: true, ref: 'Site' },
   start_pos_latitude: { type: Number },
   start_pos_longitude: { type: Number },
   end_pos_latitude: { type: Number },

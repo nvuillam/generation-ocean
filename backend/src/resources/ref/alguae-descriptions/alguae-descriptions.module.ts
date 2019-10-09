@@ -16,4 +16,4 @@ import { AlguaeDescriptionSchema } from './alguae-description.model';
   controllers: [AlguaeDescriptionsController],
   providers: [AlguaeDescriptionsService],
 })
-export class AlguaeDescriptionsModule {}
+export class AlguaeDescriptionsModule { }

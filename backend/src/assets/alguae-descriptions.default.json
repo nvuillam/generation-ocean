@@ -1,0 +1,23 @@
+[
+    {
+        "_id": "xxxxxx",
+        "code": "xxxxxx",
+        "name": "XXXXXX",
+        "description": "XXXXXXXXX",
+        "picture_url": ""
+    },
+    {
+        "_id": "yyyyyyy",
+        "code": "yyyyyyy",
+        "name": "YYYYYY",
+        "description": "YYYYYYYYY",
+        "picture_url": ""
+    },
+    {
+        "_id": "zzzzzzzzz",
+        "code": "zzzzzzzzz",
+        "name": "ZZZZZZZZZZ",
+        "description": "ZZZZZZZZZZ",
+        "picture_url": ""
+    }
+]

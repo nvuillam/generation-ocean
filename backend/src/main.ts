@@ -1,4 +1,6 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
@@ -7,9 +9,10 @@ const PORT = process.env.PORT || 3000;
 
 async function bootstrap() {
   // Create nest app
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix(BASE_API_PATH);
   app.enableCors();
+  app.useStaticAssets(join(__dirname, '..', 'assets'));
 
   // Initialize swagger module
   const options = new DocumentBuilder()
