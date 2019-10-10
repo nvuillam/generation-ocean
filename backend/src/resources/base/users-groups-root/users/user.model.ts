@@ -6,8 +6,15 @@ import { ApiModelProperty } from '@nestjs/swagger';
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, unique: true },
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   created_at: { type: Date, default: Date.now },
   additional_info: String,
 });

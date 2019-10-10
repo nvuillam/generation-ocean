@@ -60,7 +60,7 @@ export class UsersController extends ResourceRootController {
   async getUsers(@Query('name') name: string) {
     const params: { [key: string]: any } = {};
     if (name) {
-      params.name = { $regex: '.*' + name + '.*' };
+      params.name = { $regex: new RegExp('.*' + name + '.*', 'i') };
     }
     const users = await this.usersService.getUsers(params);
     return users;

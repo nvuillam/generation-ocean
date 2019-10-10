@@ -60,7 +60,7 @@ export class SitesController extends ResourceRootController {
   async getSites(@Query('name') name: string) {
     const params: { [key: string]: any } = {};
     if (name) {
-      params.name = { $regex: '.*' + name + '.*' };
+      params.name = { $regex: new RegExp('.*' + name + '.*', 'i') };
     }
     const sites = await this.sitesService.getSites(params);
     return sites;

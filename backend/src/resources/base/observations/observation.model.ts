@@ -22,7 +22,7 @@ export const ObservationSchema = new mongoose.Schema({
   },
   group_id: {
     type: ObjectId,
-    required: false, //isRequiredForObservationToStart, //uncomment when groups are implemented
+    required: false, // isRequiredForObservationToStart, //uncomment when groups are implemented
   },
   user_id: {
     type: ObjectId,

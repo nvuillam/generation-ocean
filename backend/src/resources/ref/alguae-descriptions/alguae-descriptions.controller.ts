@@ -47,7 +47,7 @@ export class AlguaeDescriptionsController extends ResourceRootController {
   async getAlguaeDescriptions(@Query('name') name: string) {
     const params: { [key: string]: any } = {};
     if (name) {
-      params.name = { $regex: '.*' + name + '.*' };
+      params.name = { $regex: new RegExp('.*' + name + '.*', 'i') };
     }
     const alguaeDescriptions = await this.alguaeDescriptionsService.getAlguaeDescriptions(
       params,

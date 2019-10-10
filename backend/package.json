@@ -15,7 +15,7 @@
     "start:prod.old": "node dist/main",
     "start:prod": "node dist/main.js",
     "lint": "tslint -p tsconfig.json -c tslint.json",
-    "lint:fix": "tslint -p tsconfig.json -c tslint.json --fix",
+    "lint:format-and-fix": "npm run format && tslint -p tsconfig.json -c tslint.json --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

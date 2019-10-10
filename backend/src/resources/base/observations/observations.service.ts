@@ -56,6 +56,12 @@ export class ObservationsService {
     return observations;
   }
 
+  async getObservationsByGroup(groupId: string) {
+    const observations = await this.observationModel
+      .find({ group_id: groupId })
+      .exec();
+    return observations;
+  }
   /*
   async deleteProduct(prodId: string) {
     const result = await this.productModel.deleteOne({_id: prodId}).exec();

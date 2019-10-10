@@ -27,6 +27,7 @@ async function bootstrap() {
     .addTag('quadrats')
     .addTag('sites')
     .addTag('users')
+    .addTag('groups')
     .addTag('alguae-descriptions')
     .build();
   const document = SwaggerModule.createDocument(app, options);
