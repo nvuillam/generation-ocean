@@ -35,7 +35,7 @@ export class QuadratsService {
 
   async getQuadratsByTransect(transectId: string) {
     const quadrats = await this.quadratModel
-      .find({ transect_id: transectId })
+      .find({ transect: transectId })
       .exec();
     return quadrats;
   }

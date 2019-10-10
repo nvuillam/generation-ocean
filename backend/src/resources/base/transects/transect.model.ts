@@ -17,12 +17,12 @@ export const TransectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  observation_id: {
+  observation: {
     type: ObjectId,
     ref: 'Observation',
     required: true,
   },
-  site_id: {
+  site: {
     type: ObjectId,
     ref: 'Site',
     required: true,
@@ -75,8 +75,8 @@ export const TransectSchema = new mongoose.Schema({
 export interface Transect extends mongoose.Document {
   _id: string;
   name: string;
-  observation_id: string;
-  site_id: string;
+  observation: string;
+  site: string;
   status: string;
   start_pos_latitude: number;
   start_pos_longitude: number;
@@ -99,9 +99,9 @@ export class TransectDTO {
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })
   created_at: Date;
   @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
-  observation_id: string;
+  observation: string;
   @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
-  site_id: string;
+  site: string;
   @ApiModelProperty({
     enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
     example: 'draft',

@@ -31,7 +31,7 @@ export class TransectsService {
 
   async getTransectsByObservation(observationId: string) {
     const transects = await this.transectModel
-      .find({ observation_id: observationId })
+      .find({ observation: observationId })
       .exec();
     return transects;
   }

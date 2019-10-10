@@ -18,7 +18,7 @@ export const QuadratSchema = new mongoose.Schema({
     type: String,
     required: isRequiredForQuadratToBeAssigned,
   },
-  transect_id: {
+  transect: {
     type: ObjectId,
     required: true,
     ref: 'Transect',
@@ -39,7 +39,7 @@ export const QuadratSchema = new mongoose.Schema({
 export interface Quadrat extends mongoose.Document {
   _id: string;
   name: string;
-  transect_id: string;
+  transect: string;
   status: string;
   alguaes: any[];
   created_at: Date;
@@ -52,7 +52,7 @@ export class QuadratDTO {
   @ApiModelProperty({ example: 'Q1' })
   name: string;
   @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
-  transect_id: string;
+  transect: string;
   @ApiModelProperty({
     enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
     example: 'draft',

@@ -1,0 +1,1803 @@
+{
+	"info": {
+		"_postman_id": "bc72f18e-112a-4615-953b-b3cd366e77a4",
+		"name": "Generation Ocean",
+		"description": "Generations Ocean API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "observations",
+			"description": "Folder for observations",
+			"item": [
+				{
+					"name": "Create a new observation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2ddfbc95-65f7-4407-a6e8-e8263981e8fc",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"status is draft\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"draft\");",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ddc01675-bac8-4701-8e57-338f03852e4e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Observation du mardi aprem\",\r\n  \"site\": \"{{testSiteId}}\",\r\n  \"user\": \"5d9e35fbd1446f07fce83c99\",\r\n  \"protocol\": \"ALAMER\",\r\n  \"status\": \"draft\",\r\n  \"additional_info\": \"Membres de la classe\\nNico\\nKevin\\n {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/observations",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"observations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new draft observation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a0b5674-540d-4c60-9fed-fd651b8121f5",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"status is draft\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"draft\");",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2c7addfc-2254-474c-9d73-ce594c046698",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Some draft observation\",\r\n  \"user\": \"5d9e35fbd1446f07fce83c99\",\r\n  \"additional_info\": \"Membres de la classe\\nNico\\nKevin\\n {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/observations",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"observations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get observation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26b305b9-c7fa-4b84-950f-368fe338bdf7",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/observations/{{testObservationId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"observations",
+								"{{testObservationId}}"
+							]
+						},
+						"description": "Returns a single observation"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing observation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e0644860-a414-4a03-9fc0-c2cc5637f496",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4f60ecbd-be1c-4f1c-99a3-434233deddee",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"current\",\n    \"user\": \"5d9e35fbd1446f07fce83c99\",\n    \"additional_info\": \"Membres de la classe\\nNico\\nKevin\\n {{randomString}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/observations/{{testObservationId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"observations",
+								"{{testObservationId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List transects of an observation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "496834d0-1052-4ff3-bd70-7e9d8ff78210",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/observations/{{testObservationId}}/transects",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"observations",
+								"{{testObservationId}}",
+								"transects"
+							]
+						},
+						"description": "Returns a single observation"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transects",
+			"description": "Folder for transects",
+			"item": [
+				{
+					"name": "Create a new transect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "52c8bf0b-af25-4c91-a820-997cceccd2cf",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"status is draft\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"draft\");",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "245e1547-d2c2-4ee0-9ad9-bfeaed1205f4",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"T5\",\r\n  \"observation\": \"{{testObservationId}}\",\r\n  \"site\": \"{{testSiteId}}\",\r\n  \"start_pos_latitude\": 48.8003677,\r\n  \"start_pos_longitude\": 2.1853903,\r\n  \"end_pos_latitude\": 48.7999887,\r\n  \"end_pos_longitude\": 2.185162,\r\n  \"sifting_trace\": true,\r\n  \"motor_access\": true,\r\n  \"foreshore_cumulated_length_m\": 18,\r\n  \"foreshore_average_width_m\": 3,\r\n  \"foreshore_average_thickness_cm\": 5,\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/transects",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"transects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get transect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0f176af2-ed5f-4b9c-b2cf-e48ba9dd681f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/transects/{{testTransectId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"transects",
+								"{{testTransectId}}"
+							]
+						},
+						"description": "Returns a single transect"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing transect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fde6ef9f-b312-478b-a75e-7e31c3ee8889",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "de2a3817-626c-41d0-a60d-47c6bb5d9d7d",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"T5\",\n    \"sifting_trace\": false,\n    \"motor_access\": true,\n    \"status\": \"validation_requested\",\n    \"additional_info\": \"Some additional comment {{randomString}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/transects/{{testTransectId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"transects",
+								"{{testTransectId}}"
+							]
+						},
+						"description": "Returns a single transect"
+					},
+					"response": []
+				},
+				{
+					"name": "List quadrats of a transect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd5a463a-425a-4d3f-a02d-7e0491c1ab13",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/transects/{{testTransectId}}/quadrats",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"transects",
+								"{{testTransectId}}",
+								"quadrats"
+							]
+						},
+						"description": "List quadrats of a transect"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "quadrats",
+			"description": "Folder for quadrats",
+			"item": [
+				{
+					"name": "Creates a new quadrat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "71a5ee8d-6e0a-4e19-b031-df94d3285cef",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"status is draft\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"draft\");",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7bc3f79f-e017-4e95-b8c5-3e4bbfc98328",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Q4\",\r\n  \"transect\": \"{{testTransectId}}\",\r\n  \"created_at\": \"2019-10-06T21:18:44.471Z\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/quadrats",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"quadrats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get quadrat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "328439cd-cc33-49f3-9794-c94e5fef6c2f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/quadrats/{{testQuadratId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"quadrats",
+								"{{testQuadratId}}"
+							]
+						},
+						"description": "Returns a single quadrat"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing quadrat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05fe0483-55e2-4bb8-8577-81c141a1e838",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "03c13342-da0a-465e-974d-b99e518d82ad",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"validation_requested\",\n  \"additional_info\": \"Some additional comment {{randomString}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/quadrats/{{testQuadratId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"quadrats",
+								"{{testQuadratId}}"
+							]
+						},
+						"description": "Returns a single quadrat"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quadrat Alguaes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c6b3572-12f2-4f60-a616-2b6ccdb421b4",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/quadrats/{{testQuadratId}}/alguaes",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"quadrats",
+								"{{testQuadratId}}",
+								"alguaes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upsert alguae analysis on a Quadrat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9634f423-3741-4be2-9f15-3392e61106a8",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Code is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData.code != null && typeof jsonData.code === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"abundance equals random abundance index\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.abundance_index).to.eql(pm.environment.get(\"randomAbundanceIndex\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b1d6554c-60f4-4dd7-b5b2-0c38419a91a6",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomAbundanceIndex\", _.random(1,4));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"abundance_index\": {{randomAbundanceIndex}}\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/quadrats/{{testQuadratId}}/alguaes/{{testAlguaeCode}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"quadrats",
+								"{{testQuadratId}}",
+								"alguaes",
+								"{{testAlguaeCode}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sites",
+			"description": null,
+			"item": [
+				{
+					"name": "Create a new site",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c79fd65-0492-4725-a40e-66218f59b8b6",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "40f28acc-7b19-4fff-909e-5e3b9a54842e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Viroflay\",\r\n  \"pos_longitude\": 48.8025882,\r\n  \"pos_latitude\": 2.1847469,\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get site info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "82715933-10a7-49fe-9aff-44bc167ec6d1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								"{{testSiteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update site info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c1f79d9-fabd-41c7-972b-2e6a71515546",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1c0a4362-c3f5-465a-892c-c64c0abda276",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Plage de Chaville 2\",\n  \"pos_longitude\": 48.8025884,\n  \"pos_latitude\": 2.1847466,\n  \"additional_info\": \"Some additional comment {{randomString}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								"{{testSiteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all sites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b74adf6-b67c-45d8-9e99-ac94ece0dd74",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find sites containing name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6c47cf-0d6d-451f-a9cc-f6d2378dd1b9",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/?name=Chaville",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Chaville"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List observations of a site",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7670d724-7bc0-4b5e-8f08-aaeaad46e181",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}/observations",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								"{{testSiteId}}",
+								"observations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"description": null,
+			"item": [
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ebe24b20-ca98-4138-9023-8118d71a054e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fc0d8555-0163-47c0-8bb2-b1b3639476fd",
+								"type": "text/javascript",
+								"exec": [
+									"const uuid = Math.random().toString(36).substring(2, 15) +",
+									"        Math.random().toString(36).substring(2, 15);",
+									"const email = \"user_\" + uuid + \"@myDomain.com\";",
+									"pm.environment.set(\"currentEmail\", email);",
+									"",
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Nicolas Vuillamy\",\r\n  \"email\": \"{{currentEmail}}\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f34052a9-ca7d-4e0b-9794-d263f7399c71",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users/{{testUserId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{testUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "488e4655-1e57-4001-b715-be1fa6e65f65",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f213d335-f44c-45ce-8c61-4f9f5eba13a2",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users/{{testUserId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{testUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "64ec8583-8b39-41c6-a233-8ba06681250f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find users containing name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1e9832d-2211-43b5-9e7c-bda2261ebe98",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users?name=Nicolas",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Nicolas"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "groups",
+			"description": null,
+			"item": [
+				{
+					"name": "Create group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd805478-23c2-4971-9422-a074f31e37df",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "83fa659e-6c37-4ca6-a2f6-002f181e7f87",
+								"type": "text/javascript",
+								"exec": [
+									"const uuid = Math.random().toString(36).substring(2, 15) +",
+									"        Math.random().toString(36).substring(2, 15);",
+									"const email = \"user_\" + uuid + \"@myDomain.com\";",
+									"pm.environment.set(\"currentEmail\", email);",
+									"",
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Classe de mer XXXX\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f34052a9-ca7d-4e0b-9794-d263f7399c71",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups",
+								"{{testGroupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update existing group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "201a5617-9595-4e58-a246-a7d73cc2cb95",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "984f2a7d-c87a-42e7-ab62-d86d4cfad6f9",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"owner_user\": \"{{testUserId}}\",\r\n  \"status\": \"valid\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups",
+								"{{testGroupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "64ec8583-8b39-41c6-a233-8ba06681250f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find groups containing name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1e9832d-2211-43b5-9e7c-bda2261ebe98",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups?name=classe",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "classe"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ref",
+			"description": null,
+			"item": [
+				{
+					"name": "alguae-descriptions",
+					"description": null,
+					"item": [
+						{
+							"name": "List all alguaes descriptions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "896bd894-ac42-430a-b8bf-37669b227ed6",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"At least one result\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    var flag = false;",
+											"    if (jsonData !== null && jsonData.length > 0){",
+											"        flag = true ;",
+											"    }",
+											"    pm.expect(flag).to.eql(true);",
+											"});",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_BASE_URL}}/ref/alguae-descriptions",
+									"host": [
+										"{{API_BASE_URL}}"
+									],
+									"path": [
+										"ref",
+										"alguae-descriptions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get alguae description",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ca6cabc1-90a2-47ee-96d5-f169af65ea38",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Code is present\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    var flag = false;",
+											"    if (jsonData.code != null && typeof jsonData.code === 'string'){",
+											"        flag = true ;",
+											"    }",
+											"    pm.expect(flag).to.eql(true);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_BASE_URL}}/ref/alguae-descriptions/xxxxxx",
+									"host": [
+										"{{API_BASE_URL}}"
+									],
+									"path": [
+										"ref",
+										"alguae-descriptions",
+										"xxxxxx"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}

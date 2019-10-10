@@ -15,16 +15,16 @@ export const ObservationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  site_id: {
+  site: {
     type: ObjectId,
     ref: 'Site',
     required: isRequiredForObservationToStart,
   },
-  group_id: {
+  group: {
     type: ObjectId,
     required: false, // isRequiredForObservationToStart, //uncomment when groups are implemented
   },
-  user_id: {
+  user: {
     type: ObjectId,
     ref: 'User',
     required: true,
@@ -55,8 +55,8 @@ export const ObservationSchema = new mongoose.Schema({
 export interface Observation extends mongoose.Document {
   _id: string;
   name: string;
-  site_id: string;
-  group_id: string;
+  site: string;
+  group: string;
   protocol: string;
   status: string;
   created_at: Date;
@@ -73,9 +73,9 @@ export class ObservationDTO {
   })
   name: string;
   @ApiModelProperty({ example: '5d9a59858d57fa0e34f23a0e' })
-  site_id: string;
+  site: string;
   @ApiModelProperty({ example: '5d9a59858d57fa0e34f23a0e' })
-  group_id: string;
+  group: string;
   @ApiModelProperty({ enum: ['ALAMER'], example: 'ALAMER' })
   protocol: string;
   @ApiModelProperty({

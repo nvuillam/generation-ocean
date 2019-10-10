@@ -44,21 +44,21 @@ export class ObservationsService {
 
   async getObservationsBySite(siteId: string) {
     const observations = await this.observationModel
-      .find({ site_id: siteId })
+      .find({ site: siteId })
       .exec();
     return observations;
   }
 
   async getObservationsByUser(userId: string) {
     const observations = await this.observationModel
-      .find({ user_id: userId })
+      .find({ user: userId })
       .exec();
     return observations;
   }
 
   async getObservationsByGroup(groupId: string) {
     const observations = await this.observationModel
-      .find({ group_id: groupId })
+      .find({ group: groupId })
       .exec();
     return observations;
   }
@@ -87,9 +87,9 @@ export class ObservationsService {
   async manageObservationWeatherData(
     observation: Observation,
   ): Promise<Observation> {
-    if (observation.site_id != null && observation.weather == null) {
+    if (observation.site != null && observation.weather == null) {
       const site: Site = await this.sitesService.getSingleSite(
-        observation.site_id,
+        observation.site,
       );
       if (site.pos_latitude != null && site.pos_longitude != null) {
         const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(
