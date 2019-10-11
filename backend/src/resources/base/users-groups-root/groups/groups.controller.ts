@@ -24,6 +24,7 @@ import { Group, GroupDTO } from './group.model';
 
 import { ObservationsService } from '../../observations/observations.service';
 import { ObservationDTO } from '../../observations/observation.model';
+import { UserDTO } from '../users/user.model';
 
 @ApiUseTags('groups')
 @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
@@ -100,6 +101,34 @@ export class GroupsController extends ResourceRootController {
       (groupData as unknown) as Group,
     );
     return group;
+  }
+
+  // add user in a group
+  @Get(':id/users')
+  @ApiOperation({ title: 'List group users' })
+  @ApiResponse({
+    status: 200,
+    type: [UserDTO],
+    description: 'List of users',
+  })
+  async listGroupUsers(@Param('id') groupId: string) {
+    const users: UserDTO[] = await this.groupsService.listUsers(groupId);
+    return users;
+  }
+
+  // add user in a group
+  @Post(':id/users/:userId')
+  @ApiOperation({ title: 'Add a user in a group' })
+  @ApiResponse({
+    status: 200,
+    type: GroupDTO,
+    description: 'The record has been successfully created',
+  })
+  async upsertGroupUser(
+    @Param('id') groupId: string,
+    @Param('userId') userId: string,
+  ) {
+    return await this.groupsService.upsertUser(groupId, userId);
   }
 
   // List observations of a group

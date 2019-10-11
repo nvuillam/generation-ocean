@@ -22,6 +22,7 @@ export const UserSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  groups: [{ type: ObjectId, ref: 'Group' }],
   created_at: { type: Date, default: Date.now },
   additional_info: String,
 });
@@ -32,6 +33,7 @@ export interface User extends mongoose.Document {
   username: string;
   password: string;
   email: string;
+  groups: string[];
   created_at: Date;
   additional_info: string;
 }
@@ -47,6 +49,10 @@ export class UserDTO {
   password: string;
   @ApiModelProperty({ example: 'nicolas.vuillamy@gmail.com' })
   email: string;
+  @ApiModelProperty({
+    example: ['5d987dc90ed4833f3c28072c', '5d987dc90ed4833f3c28072c'],
+  })
+  groups: string[];
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })
   created_at: Date;
   @ApiModelProperty({

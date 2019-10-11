@@ -7,6 +7,1228 @@
 	},
 	"item": [
 		{
+			"name": "users",
+			"description": null,
+			"item": [
+				{
+					"name": "Authenticate existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "67b6ec5a-a48f-4a98-9153-8fedebe78dc3",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Access token is returned\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData.access_token != null && typeof jsonData.access_token === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"var json = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"authBearer\", json.access_token);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2c29ea35-b42d-4c5b-8aef-98d4331e269d",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\" : \"{{persistentTestUsername}}\",\r\n  \"password\": \"{{persistentTestPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/auth/login",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ebe24b20-ca98-4138-9023-8118d71a054e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f87b199b-3e85-4351-a3e2-70b38a893204",
+								"type": "text/javascript",
+								"exec": [
+									"const uuid = Math.random().toString(36).substring(2, 15) +",
+									"        Math.random().toString(36).substring(2, 15);",
+									"const email = \"user_\" + uuid + \"@myDomain.com\";",
+									"pm.environment.set(\"currentEmail\", email);",
+									"const password = \"pwd_\" + uuid ;",
+									"pm.environment.set(\"currentPassword\", password);",
+									"",
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Dodo {{randomString}}\",\r\n  \"username\" : \"{{currentEmail}}\",\r\n  \"email\": \"{{currentEmail}}\",\r\n  \"password\" : \"{{currentPassword}}\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate just created user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "67b6ec5a-a48f-4a98-9153-8fedebe78dc3",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Access token is returned\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData.access_token != null && typeof jsonData.access_token === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"var json = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"authBearer\", json.access_token);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2c29ea35-b42d-4c5b-8aef-98d4331e269d",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\" : \"{{currentEmail}}\",\r\n  \"password\": \"{{currentPassword}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/auth/login",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f34052a9-ca7d-4e0b-9794-d263f7399c71",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users/{{testUserId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{testUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "488e4655-1e57-4001-b715-be1fa6e65f65",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f213d335-f44c-45ce-8c61-4f9f5eba13a2",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users/{{testUserId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{testUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "64ec8583-8b39-41c6-a233-8ba06681250f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find users containing name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1e9832d-2211-43b5-9e7c-bda2261ebe98",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/users?name=Nicolas",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Nicolas"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "groups",
+			"description": null,
+			"item": [
+				{
+					"name": "Create group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd805478-23c2-4971-9422-a074f31e37df",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "83fa659e-6c37-4ca6-a2f6-002f181e7f87",
+								"type": "text/javascript",
+								"exec": [
+									"const uuid = Math.random().toString(36).substring(2, 15) +",
+									"        Math.random().toString(36).substring(2, 15);",
+									"const email = \"user_\" + uuid + \"@myDomain.com\";",
+									"pm.environment.set(\"currentEmail\", email);",
+									"",
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Classe de mer XXXX\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f34052a9-ca7d-4e0b-9794-d263f7399c71",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups",
+								"{{testGroupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update existing group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "201a5617-9595-4e58-a246-a7d73cc2cb95",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "984f2a7d-c87a-42e7-ab62-d86d4cfad6f9",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"owner_user\": \"{{testUserId}}\",\r\n  \"status\": \"valid\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups",
+								"{{testGroupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user in group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca5bd4cb-2094-47b7-88f5-1f37e10d78dd",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fc52307a-6c34-44ef-8a78-90913db6de4d",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}/users/{{testUserId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups",
+								"{{testGroupId}}",
+								"users",
+								"{{testUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List users of a group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "296d4545-1aaa-46d8-869d-b04c021bc8c8",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "984f2a7d-c87a-42e7-ab62-d86d4cfad6f9",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}/users",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups",
+								"{{testGroupId}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "64ec8583-8b39-41c6-a233-8ba06681250f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find groups containing name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1e9832d-2211-43b5-9e7c-bda2261ebe98",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/groups?name=classe",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"groups"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "classe"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sites",
+			"description": null,
+			"item": [
+				{
+					"name": "Create a new site",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c79fd65-0492-4725-a40e-66218f59b8b6",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "40f28acc-7b19-4fff-909e-5e3b9a54842e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Viroflay\",\r\n  \"pos_longitude\": 48.8025882,\r\n  \"pos_latitude\": 2.1847469,\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get site info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "82715933-10a7-49fe-9aff-44bc167ec6d1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								"{{testSiteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update site info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c1f79d9-fabd-41c7-972b-2e6a71515546",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1c0a4362-c3f5-465a-892c-c64c0abda276",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Plage de Chaville 2\",\n  \"pos_longitude\": 48.8025884,\n  \"pos_latitude\": 2.1847466,\n  \"additional_info\": \"Some additional comment {{randomString}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								"{{testSiteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all sites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b74adf6-b67c-45d8-9e99-ac94ece0dd74",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find sites containing name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd6c47cf-0d6d-451f-a9cc-f6d2378dd1b9",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/?name=Chaville",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Chaville"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List observations of a site",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7670d724-7bc0-4b5e-8f08-aaeaad46e181",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}/observations",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								"{{testSiteId}}",
+								"observations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "observations",
 			"description": "Folder for observations",
 			"item": [
@@ -56,11 +1278,20 @@
 						"header": [
 							{
 								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
 								"value": "application/json"
 							},
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -130,6 +1361,15 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -175,6 +1415,10 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -240,7 +1484,16 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -289,6 +1542,14 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -366,7 +1627,16 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -412,6 +1682,14 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -477,7 +1755,16 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -527,6 +1814,14 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -605,6 +1900,15 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -650,6 +1954,14 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -715,7 +2027,16 @@
 							},
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -765,6 +2086,14 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -831,6 +2160,15 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
 							}
 						],
 						"body": {
@@ -847,853 +2185,6 @@
 								"{{testQuadratId}}",
 								"alguaes",
 								"{{testAlguaeCode}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "sites",
-			"description": null,
-			"item": [
-				{
-					"name": "Create a new site",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "7c79fd65-0492-4725-a40e-66218f59b8b6",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id has been created\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "40f28acc-7b19-4fff-909e-5e3b9a54842e",
-								"type": "text/javascript",
-								"exec": [
-									"pm.environment.set(\"randomString\", _.random(1,500000000));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Plage de Viroflay\",\r\n  \"pos_longitude\": 48.8025882,\r\n  \"pos_latitude\": 2.1847469,\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/sites",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"sites"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get site info",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "82715933-10a7-49fe-9aff-44bc167ec6d1",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id is present\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"sites",
-								"{{testSiteId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update site info",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "0c1f79d9-fabd-41c7-972b-2e6a71515546",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id is present\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"additional info contains random string\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "1c0a4362-c3f5-465a-892c-c64c0abda276",
-								"type": "text/javascript",
-								"exec": [
-									"pm.environment.set(\"randomString\", _.random(1,500000000));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Plage de Chaville 2\",\n  \"pos_longitude\": 48.8025884,\n  \"pos_latitude\": 2.1847466,\n  \"additional_info\": \"Some additional comment {{randomString}}\"\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"sites",
-								"{{testSiteId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find all sites",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "1b74adf6-b67c-45d8-9e99-ac94ece0dd74",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/sites/",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"sites",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find sites containing name",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "cd6c47cf-0d6d-451f-a9cc-f6d2378dd1b9",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/sites/?name=Chaville",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"sites",
-								""
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Chaville"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "List observations of a site",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "7670d724-7bc0-4b5e-8f08-aaeaad46e181",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Plage de Chaville\",\r\n  \"pos_longitude\": 48.8025884,\r\n  \"pos_latitude\": 2.1847466,\r\n  \"additional_info\": \"La Laisse de mer du marché !\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/sites/{{testSiteId}}/observations",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"sites",
-								"{{testSiteId}}",
-								"observations"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "users",
-			"description": null,
-			"item": [
-				{
-					"name": "Create user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "ebe24b20-ca98-4138-9023-8118d71a054e",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id has been created\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"additional info contains random string\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "fc0d8555-0163-47c0-8bb2-b1b3639476fd",
-								"type": "text/javascript",
-								"exec": [
-									"const uuid = Math.random().toString(36).substring(2, 15) +",
-									"        Math.random().toString(36).substring(2, 15);",
-									"const email = \"user_\" + uuid + \"@myDomain.com\";",
-									"pm.environment.set(\"currentEmail\", email);",
-									"",
-									"pm.environment.set(\"randomString\", _.random(1,500000000));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Nicolas Vuillamy\",\r\n  \"email\": \"{{currentEmail}}\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/users",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "f34052a9-ca7d-4e0b-9794-d263f7399c71",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id is present\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/users/{{testUserId}}",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"users",
-								"{{testUserId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update existing user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "488e4655-1e57-4001-b715-be1fa6e65f65",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id is present\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"additional info contains random string\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "f213d335-f44c-45ce-8c61-4f9f5eba13a2",
-								"type": "text/javascript",
-								"exec": [
-									"pm.environment.set(\"randomString\", _.random(1,500000000));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/users/{{testUserId}}",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"users",
-								"{{testUserId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find all users",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "64ec8583-8b39-41c6-a233-8ba06681250f",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/users",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find users containing name",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "c1e9832d-2211-43b5-9e7c-bda2261ebe98",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/users?name=Nicolas",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"users"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Nicolas"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "groups",
-			"description": null,
-			"item": [
-				{
-					"name": "Create group",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "dd805478-23c2-4971-9422-a074f31e37df",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id has been created\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"additional info contains random string\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "83fa659e-6c37-4ca6-a2f6-002f181e7f87",
-								"type": "text/javascript",
-								"exec": [
-									"const uuid = Math.random().toString(36).substring(2, 15) +",
-									"        Math.random().toString(36).substring(2, 15);",
-									"const email = \"user_\" + uuid + \"@myDomain.com\";",
-									"pm.environment.set(\"currentEmail\", email);",
-									"",
-									"pm.environment.set(\"randomString\", _.random(1,500000000));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Classe de mer XXXX\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/groups",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"groups"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get group",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "f34052a9-ca7d-4e0b-9794-d263f7399c71",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id is present\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"groups",
-								"{{testGroupId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update existing group",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "201a5617-9595-4e58-a246-a7d73cc2cb95",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Id is present\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"additional info contains random string\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "984f2a7d-c87a-42e7-ab62-d86d4cfad6f9",
-								"type": "text/javascript",
-								"exec": [
-									"pm.environment.set(\"randomString\", _.random(1,500000000));"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"owner_user\": \"{{testUserId}}\",\r\n  \"status\": \"valid\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/groups/{{testGroupId}}",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"groups",
-								"{{testGroupId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find all groups",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "64ec8583-8b39-41c6-a233-8ba06681250f",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/groups",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"groups"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find groups containing name",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "c1e9832d-2211-43b5-9e7c-bda2261ebe98",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/groups?name=classe",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"groups"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "classe"
-								}
 							]
 						}
 					},
@@ -1734,7 +2225,16 @@
 							],
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authBearer}}"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": ""
@@ -1775,7 +2275,16 @@
 							],
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authBearer}}"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": ""

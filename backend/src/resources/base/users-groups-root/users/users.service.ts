@@ -39,9 +39,25 @@ export class UsersService {
   }
 
   async updateUser(userId: string, userData: User) {
-    const updatedUser: User = await this.findUser(userId);
-    updatedUser.set(userData);
-    const result = updatedUser.save();
+    const user: User = await this.findUser(userId);
+    user.set(userData);
+    const result = user.save();
+    return result;
+  }
+
+  async addGroup(userId: string, groupId: string) {
+    const user: User = await this.findUser(userId);
+    user.groups = user.groups || [];
+    let propagate = false;
+    if (!user.groups.includes(groupId)) {
+      user.groups.push(groupId);
+      user.groups = [...new Set(user.groups)];
+      propagate = true;
+    }
+    const result = user.save();
+    if (propagate) {
+      //     await this.groupsService.upsertUser(groupId, userId);
+    }
     return result;
   }
 
