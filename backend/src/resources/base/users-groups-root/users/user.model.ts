@@ -10,6 +10,13 @@ export const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+  },
   email: {
     type: String,
     unique: true,
@@ -22,6 +29,8 @@ export const UserSchema = new mongoose.Schema({
 export interface User extends mongoose.Document {
   _id: string;
   name: string;
+  username: string;
+  password: string;
   email: string;
   created_at: Date;
   additional_info: string;
@@ -32,6 +41,10 @@ export class UserDTO {
   _id: string;
   @ApiModelProperty({ example: 'Nicolas Vuillamy' })
   name: string;
+  @ApiModelProperty({ example: 'lelamaNUL' })
+  username: string;
+  @ApiModelProperty({ example: 'chouchou56' })
+  password: string;
   @ApiModelProperty({ example: 'nicolas.vuillamy@gmail.com' })
   email: string;
   @ApiModelProperty({ example: '2019-10-06T21:18:44.471Z' })

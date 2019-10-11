@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ResourceRootController } from '../../resource.root.controller';
 
@@ -8,6 +17,7 @@ import { TransectsService } from '../transects/transects.service';
 import { TransectDTO } from '../transects/transect.model';
 
 @ApiUseTags('observations')
+@UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
 @Controller('observations')
 export class ObservationsController extends ResourceRootController {
   constructor(

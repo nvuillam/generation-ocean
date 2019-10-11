@@ -10,7 +10,11 @@ import { ObservationsModule } from './resources/base/observations/observations.m
 import { QuadratsModule } from './resources/base/quadrats/quadrats.module';
 import { SitesModule } from './resources/base/sites/sites.module';
 import { TransectsModule } from './resources/base/transects/transects.module';
-import { UsersGroupsModule } from './resources/base/users-groups-root/user-groups.module';
+
+// User management resources
+import { UsersModule } from './resources/base/users-groups-root/users/users.module';
+import { GroupsModule } from './resources/base/users-groups-root/groups/groups.module';
+import { AuthModule } from './resources/base/users-groups-root/auth/auth.module';
 
 // Ref resources modules
 import { AlguaeDescriptionsModule } from './resources/ref/alguae-descriptions/alguae-descriptions.module';
@@ -28,7 +32,10 @@ import { WeatherModule } from './services/weather/weather.module';
     QuadratsModule,
     SitesModule,
     TransectsModule,
-    UsersGroupsModule,
+    // User management resources
+    AuthModule,
+    UsersModule,
+    GroupsModule,
     // Ref
     AlguaeDescriptionsModule,
     // Services

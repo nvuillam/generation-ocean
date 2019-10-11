@@ -22,6 +22,7 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .setBasePath(BASE_API_PATH)
+    .addTag('auth')
     .addTag('observations')
     .addTag('transects')
     .addTag('quadrats')

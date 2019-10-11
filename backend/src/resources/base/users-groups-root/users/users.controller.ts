@@ -7,7 +7,9 @@ import {
   Query,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiUseTags,
   ApiOperation,
@@ -45,6 +47,7 @@ export class UsersController extends ResourceRootController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Find users' })
   @ApiImplicitQuery({
     name: 'name',
@@ -67,6 +70,7 @@ export class UsersController extends ResourceRootController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Get a single user' })
   @ApiResponse({
     status: 200,
@@ -78,6 +82,7 @@ export class UsersController extends ResourceRootController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Update an existing user' })
   @ApiResponse({
     status: 200,
@@ -93,6 +98,7 @@ export class UsersController extends ResourceRootController {
   }
 
   @Get(':id/observations')
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'List observations of a user' })
   @ApiResponse({
     status: 200,

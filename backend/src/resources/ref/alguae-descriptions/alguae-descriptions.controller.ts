@@ -7,7 +7,9 @@ import {
   Query,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiUseTags,
   ApiOperation,
@@ -23,6 +25,7 @@ import {
 } from './alguae-description.model';
 
 @ApiUseTags('alguae-descriptions')
+@UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
 @Controller('ref/alguae-descriptions')
 export class AlguaeDescriptionsController extends ResourceRootController {
   constructor(

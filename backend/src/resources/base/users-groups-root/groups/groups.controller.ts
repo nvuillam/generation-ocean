@@ -7,6 +7,7 @@ import {
   Query,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -14,6 +15,8 @@ import {
   ApiImplicitQuery,
   ApiResponse,
 } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+
 import { ResourceRootController } from '../../../resource.root.controller';
 
 import { GroupsService } from './groups.service';
@@ -23,6 +26,7 @@ import { ObservationsService } from '../../observations/observations.service';
 import { ObservationDTO } from '../../observations/observation.model';
 
 @ApiUseTags('groups')
+@UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
 @Controller('groups')
 export class GroupsController extends ResourceRootController {
   constructor(

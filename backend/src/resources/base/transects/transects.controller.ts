@@ -6,8 +6,11 @@ import {
   Param,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+
 import { ResourceRootController } from '../../resource.root.controller';
 
 import { TransectsService } from './transects.service';
@@ -17,6 +20,7 @@ import { QuadratsService } from '../quadrats/quadrats.service';
 import { QuadratDTO } from '../quadrats/quadrat.model';
 
 @ApiUseTags('transects')
+@UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
 @Controller('transects')
 export class TransectsController extends ResourceRootController {
   constructor(

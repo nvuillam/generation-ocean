@@ -7,7 +7,9 @@ import {
   Query,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiUseTags,
   ApiOperation,
@@ -23,6 +25,7 @@ import { ObservationsService } from '../observations/observations.service';
 import { ObservationDTO } from '../observations/observation.model';
 
 @ApiUseTags('sites')
+@UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
 @Controller('sites')
 export class SitesController extends ResourceRootController {
   constructor(

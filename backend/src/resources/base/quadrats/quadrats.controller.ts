@@ -6,8 +6,11 @@ import {
   Param,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+
 import { ResourceRootController } from '../../resource.root.controller';
 import { QuadratsService } from './quadrats.service';
 import { Quadrat, QuadratDTO } from './quadrat.model';
@@ -17,6 +20,7 @@ import {
 } from '../../ref/alguae-descriptions/alguae-analysis.model';
 
 @ApiUseTags('quadrats')
+@UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
 @Controller('quadrats')
 export class QuadratsController extends ResourceRootController {
   constructor(private readonly quadratsService: QuadratsService) {
