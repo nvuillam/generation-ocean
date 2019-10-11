@@ -7,10 +7,10 @@ import { AlguaeAnalysisSchema } from '../../ref/alguae-descriptions/alguae-analy
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 function isRequiredForQuadratToBeAssigned() {
-  return this.status != null && this.status !== 'draft';
+  return false; // this.status != null && this.status !== 'draft';
 }
 function isRequiredForQuadratToBeValidated() {
-  return this.status != null && this.status !== 'draft';
+  return false; //this.status != null && this.status !== 'draft';
 }
 
 export const QuadratSchema = new mongoose.Schema({
@@ -20,7 +20,7 @@ export const QuadratSchema = new mongoose.Schema({
   },
   transect: {
     type: ObjectId,
-    required: true,
+    required: isRequiredForQuadratToBeAssigned,
     ref: 'Transect',
   },
   status: {
