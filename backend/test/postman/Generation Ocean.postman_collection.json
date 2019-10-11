@@ -11,7 +11,7 @@
 			"description": null,
 			"item": [
 				{
-					"name": "Authenticate existing user",
+					"name": "V0 Authenticate existing user",
 					"event": [
 						{
 							"listen": "test",
@@ -70,7 +70,7 @@
 					"response": []
 				},
 				{
-					"name": "Create user",
+					"name": "V0 Create user",
 					"event": [
 						{
 							"listen": "test",
@@ -137,7 +137,7 @@
 					"response": []
 				},
 				{
-					"name": "Authenticate just created user",
+					"name": "V0 Authenticate just created user",
 					"event": [
 						{
 							"listen": "test",
@@ -196,7 +196,7 @@
 					"response": []
 				},
 				{
-					"name": "Get User",
+					"name": "V0 Get User",
 					"event": [
 						{
 							"listen": "test",
@@ -246,7 +246,7 @@
 					"response": []
 				},
 				{
-					"name": "Update existing user",
+					"name": "V0 Update existing user",
 					"event": [
 						{
 							"listen": "test",
@@ -1855,7 +1855,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "71a5ee8d-6e0a-4e19-b031-df94d3285cef",
+								"id": "79dfce03-c4d2-4d9d-a732-d324524f2d04",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Id has been created\", function () {",
@@ -1875,7 +1875,10 @@
 									"pm.test(\"additional info contains random string\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
-									"});"
+									"});",
+									"",
+									"var json = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"testQuadratId\", json._id);"
 								]
 							}
 						},
@@ -1928,7 +1931,88 @@
 					"response": []
 				},
 				{
-					"name": "Get quadrat",
+					"name": "V0 Creates an independent quadrat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fb12ea22-7725-4d4f-95df-6100b20a0bc3",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Id has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData._id != null && typeof jsonData._id === 'string'){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"status is draft\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"draft\");",
+									"});",
+									"",
+									"pm.test(\"additional info contains random string\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.additional_info).to.contain(pm.environment.get(\"randomString\"));",
+									"});",
+									"",
+									"var json = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"testQuadratId\", json._id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7bc3f79f-e017-4e95-b8c5-3e4bbfc98328",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"randomString\", _.random(1,500000000));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Q4\",\r\n  \"created_at\": \"2019-10-06T21:18:44.471Z\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/quadrats",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"quadrats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "V0 Get quadrat",
 					"event": [
 						{
 							"listen": "test",
@@ -1983,7 +2067,7 @@
 					"response": []
 				},
 				{
-					"name": "Update an existing quadrat",
+					"name": "V0 Update an existing quadrat",
 					"event": [
 						{
 							"listen": "test",
@@ -2058,64 +2142,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Quadrat Alguaes",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "0c6b3572-12f2-4f60-a616-2b6ccdb421b4",
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"At least one result\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    var flag = false;",
-									"    if (jsonData !== null && jsonData.length > 0){",
-									"        flag = true ;",
-									"    }",
-									"    pm.expect(flag).to.eql(true);",
-									"});",
-									"",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authBearer}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{API_BASE_URL}}/quadrats/{{testQuadratId}}/alguaes",
-							"host": [
-								"{{API_BASE_URL}}"
-							],
-							"path": [
-								"quadrats",
-								"{{testQuadratId}}",
-								"alguaes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Upsert alguae analysis on a Quadrat",
+					"name": "V0 Upsert alguae analysis on a Quadrat",
 					"event": [
 						{
 							"listen": "test",
@@ -2189,6 +2216,63 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "V0 Get Quadrat Alguaes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c6b3572-12f2-4f60-a616-2b6ccdb421b4",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"At least one result\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var flag = false;",
+									"    if (jsonData !== null && jsonData.length > 0){",
+									"        flag = true ;",
+									"    }",
+									"    pm.expect(flag).to.eql(true);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/quadrats/{{testQuadratId}}/alguaes",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"quadrats",
+								"{{testQuadratId}}",
+								"alguaes"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2201,7 +2285,7 @@
 					"description": null,
 					"item": [
 						{
-							"name": "List all alguaes descriptions",
+							"name": "V0 List all alguaes descriptions",
 							"event": [
 								{
 									"listen": "test",
@@ -2253,7 +2337,7 @@
 							"response": []
 						},
 						{
-							"name": "Get alguae description",
+							"name": "V0 Get alguae description",
 							"event": [
 								{
 									"listen": "test",
