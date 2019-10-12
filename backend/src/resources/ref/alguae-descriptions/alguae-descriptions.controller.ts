@@ -41,16 +41,36 @@ export class AlguaeDescriptionsController extends ResourceRootController {
     required: false,
     description: 'Name filter',
   })
+  @ApiImplicitQuery({
+    name: 'color',
+    required: false,
+    description: 'Color filter',
+  })
+  @ApiImplicitQuery({
+    name: 'shape',
+    required: false,
+    description: 'Shape filter',
+  })
   @ApiResponse({
     status: 200,
     type: AlguaeDescriptionDTO,
     isArray: true,
     description: 'Liste of found Alguae Descriptions',
   })
-  async getAlguaeDescriptions(@Query('name') name: string) {
+  async getAlguaeDescriptions(
+    @Query('name') name: string,
+    @Query('color') color: string,
+    @Query('shape') shape: string,
+  ) {
     const params: { [key: string]: any } = {};
     if (name) {
       params.name = { $regex: new RegExp('.*' + name + '.*', 'i') };
+    }
+    if (color) {
+      params.color = color;
+    }
+    if (shape) {
+      params.shape = shape;
     }
     const alguaeDescriptions = await this.alguaeDescriptionsService.getAlguaeDescriptions(
       params,

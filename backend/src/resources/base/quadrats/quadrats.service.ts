@@ -107,10 +107,11 @@ export class QuadratsService {
       );
       // If weather info found, set it on the Observation
       if (localWeatherInfo) {
-        quadrat.weather = localWeatherInfo;
-        return quadrat.save();
+        const updatedQuadrat: Quadrat = await this.findQuadrat(quadrat._id);
+        updatedQuadrat.weather = localWeatherInfo;
+        return updatedQuadrat.save();
       }
-      return quadrat;
     }
+    return quadrat;
   }
 }

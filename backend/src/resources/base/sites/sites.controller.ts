@@ -43,7 +43,9 @@ export class SitesController extends ResourceRootController {
     description: 'The record has been successfully created.',
   })
   async addSite(@Body() siteData: SiteDTO) {
-    const siteCreated = await this.sitesService.insertSite(siteData as Site);
+    const siteCreated = await this.sitesService.insertSite(
+      (siteData as unknown) as Site,
+    );
     return siteCreated;
   }
 
@@ -90,16 +92,10 @@ export class SitesController extends ResourceRootController {
   async updateSite(@Param('id') siteId: string, @Body() siteData: SiteDTO) {
     const site: Site = await this.sitesService.updateSite(
       siteId,
-      siteData as Site,
+      (siteData as unknown) as Site,
     );
     return site;
   }
-  /*
-    @Delete(':id')
-    async removeProduct(@Param('id') prodId: string) {
-        await this.productsService.deleteProduct(prodId);
-        return null;
-    } */
 
   @Get(':id/observations')
   @ApiOperation({ title: 'List observations of a site' })
@@ -111,5 +107,16 @@ export class SitesController extends ResourceRootController {
   })
   getSiteTransects(@Param('id') siteId: string) {
     return this.observationsService.getObservationsBySite(siteId);
+  }
+
+  @Post('/resynchronize')
+  @ApiOperation({ title: 'Resynchronizes the sites listing' })
+  @ApiResponse({
+    status: 200,
+    description: 'The sites list has been resynchronized',
+  })
+  async refreshSitesListing() {
+    const siteCreated = await this.sitesService.refreshSitesListing();
+    return siteCreated;
   }
 }
