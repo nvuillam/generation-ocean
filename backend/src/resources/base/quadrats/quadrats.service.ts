@@ -7,17 +7,21 @@ import {
   AlguaeAnalysis,
   AlguaeAnalysisDTO,
 } from '../../ref/alguae-descriptions/alguae-analysis.model';
+import { WeatherService } from '../../../services/weather/weather.service';
 
 @Injectable()
 export class QuadratsService {
   constructor(
     @InjectModel('Quadrat')
     private readonly quadratModel: Model<Quadrat>,
+    private readonly weatherService: WeatherService,
   ) {}
 
   async insertQuadrat(quadratData: Quadrat) {
     const newQuadrat: Quadrat = new this.quadratModel(quadratData);
-    const result = await newQuadrat.save();
+    const result = await newQuadrat.save().then(savedQuadrat => {
+      return this.manageQuadratWeatherData(savedQuadrat);
+    });
     return result;
   }
 
@@ -29,7 +33,9 @@ export class QuadratsService {
   async updateQuadrat(quadratId: string, quadratData: Quadrat) {
     const updatedQuadrat: Quadrat = await this.findQuadrat(quadratId);
     updatedQuadrat.set(quadratData);
-    const result = updatedQuadrat.save();
+    const result = await updatedQuadrat.save().then(savedQuadrat => {
+      return this.manageQuadratWeatherData(savedQuadrat);
+    });
     return result;
   }
 
@@ -84,6 +90,27 @@ export class QuadratsService {
     }
     if (!quadrat) {
       throw new NotFoundException('Could not find quadrat.');
+    }
+    return quadrat;
+  }
+
+  // Add weather data on quadrat ( only if GPS location is defined and weather has not been retrieved yet)
+  async manageQuadratWeatherData(quadrat: Quadrat): Promise<Quadrat> {
+    if (
+      quadrat.pos_latitude != null &&
+      quadrat.pos_longitude != null &&
+      quadrat.weather == null
+    ) {
+      const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(
+        quadrat.pos_latitude,
+        quadrat.pos_longitude,
+      );
+      // If weather info found, set it on the Observation
+      if (localWeatherInfo) {
+        const updatedQuadrat: Quadrat = await this.findQuadrat(quadrat._id);
+        updatedQuadrat.weather = localWeatherInfo;
+        return updatedQuadrat.save();
+      }
     }
     return quadrat;
   }

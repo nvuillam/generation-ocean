@@ -21,6 +21,7 @@ import { AlguaeDescriptionsModule } from './resources/ref/alguae-descriptions/al
 
 // Services modules
 import { WeatherModule } from './services/weather/weather.module';
+import { SitesListingModule } from './services/sites-listing/sites-listing.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { WeatherModule } from './services/weather/weather.module';
     AlguaeDescriptionsModule,
     // Services
     WeatherModule,
+    SitesListingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1225,6 +1225,65 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Resynchronize Sites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9d3e06e4-92a8-430d-b9d9-5f211baf477b",
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "acf58191-d01a-40b1-812d-aeccb61349be",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authBearer}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_BASE_URL}}/sites/resynchronize",
+							"host": [
+								"{{API_BASE_URL}}"
+							],
+							"path": [
+								"sites",
+								"resynchronize"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1997,7 +2056,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Q4\",\r\n  \"created_at\": \"2019-10-06T21:18:44.471Z\",\r\n  \"additional_info\": \"Some additional comment {{randomString}}\"\r\n}"
+							"raw": "{\r\n  \"name\": \"Q1\"\r\n}"
 						},
 						"url": {
 							"raw": "{{API_BASE_URL}}/quadrats",
@@ -2125,7 +2184,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"status\": \"validation_requested\",\n  \"additional_info\": \"Some additional comment {{randomString}}\"\n}"
+							"raw": "{\n  \"pos_longitude\": 48.34445,\n  \"pos_latitude\": 2.345\n}"
 						},
 						"url": {
 							"raw": "{{API_BASE_URL}}/quadrats/{{testQuadratId}}",
@@ -2331,6 +2390,126 @@
 									"path": [
 										"ref",
 										"alguae-descriptions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "V0 List green alguae descriptions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "88453e82-a3aa-4f32-b4f1-51f14d77af0c",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"At least one result\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    var flag = false;",
+											"    if (jsonData !== null && jsonData.length > 0){",
+											"        flag = true ;",
+											"    }",
+											"    pm.expect(flag).to.eql(true);",
+											"});",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authBearer}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_BASE_URL}}/ref/alguae-descriptions?color=green",
+									"host": [
+										"{{API_BASE_URL}}"
+									],
+									"path": [
+										"ref",
+										"alguae-descriptions"
+									],
+									"query": [
+										{
+											"key": "color",
+											"value": "green"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "V0 List green and ruban alguae descriptions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ff1599a5-68d6-45a0-b685-dcf9ca246864",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"At least one result\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    var flag = false;",
+											"    if (jsonData !== null && jsonData.length > 0){",
+											"        flag = true ;",
+											"    }",
+											"    pm.expect(flag).to.eql(true);",
+											"});",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authBearer}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_BASE_URL}}/ref/alguae-descriptions?color=green&shape=ruban",
+									"host": [
+										"{{API_BASE_URL}}"
+									],
+									"path": [
+										"ref",
+										"alguae-descriptions"
+									],
+									"query": [
+										{
+											"key": "color",
+											"value": "green"
+										},
+										{
+											"key": "shape",
+											"value": "ruban"
+										}
 									]
 								}
 							},

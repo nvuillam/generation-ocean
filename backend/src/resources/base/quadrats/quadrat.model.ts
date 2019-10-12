@@ -3,6 +3,7 @@
 import * as mongoose from 'mongoose';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { AlguaeAnalysisSchema } from '../../ref/alguae-descriptions/alguae-analysis.model';
+import { WeatherDTO, Weather } from '../../../services/weather/weather.model';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -10,7 +11,7 @@ function isRequiredForQuadratToBeAssigned() {
   return false; // this.status != null && this.status !== 'draft';
 }
 function isRequiredForQuadratToBeValidated() {
-  return false; //this.status != null && this.status !== 'draft';
+  return this.status != null && this.status !== 'draft';
 }
 
 export const QuadratSchema = new mongoose.Schema({
@@ -24,10 +25,10 @@ export const QuadratSchema = new mongoose.Schema({
     ref: 'Transect',
   },
   pos_latitude: {
-    type: Number
+    type: Number,
   },
   pos_longitude: {
-    type: Number
+    type: Number,
   },
   status: {
     type: String,
@@ -40,6 +41,9 @@ export const QuadratSchema = new mongoose.Schema({
   },
   created_at: { type: Date, default: Date.now },
   additional_info: String,
+  weather: {
+    type: Map,
+  },
 });
 
 export interface Quadrat extends mongoose.Document {
@@ -52,6 +56,7 @@ export interface Quadrat extends mongoose.Document {
   alguaes: any[];
   created_at: Date;
   additional_info: string;
+  weather: Weather;
 }
 
 export class QuadratDTO {
@@ -81,4 +86,6 @@ export class QuadratDTO {
   created_at: Date;
   @ApiModelProperty({ example: 'Tout commentaire additionnel sur le quadrat' })
   additional_info: string;
+  @ApiModelProperty()
+  weather: WeatherDTO;
 }

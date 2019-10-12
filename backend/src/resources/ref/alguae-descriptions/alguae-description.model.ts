@@ -8,6 +8,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 export const AlguaeDescriptionSchema = new mongoose.Schema({
   name: { type: String, required: true },
   code: { type: String, required: true },
+  color: { type: String },
+  shape: { type: String },
   description: { type: String },
   picture_url: { type: String },
   created_at: { type: Date, default: Date.now },
@@ -18,6 +20,8 @@ export interface AlguaeDescription extends mongoose.Document {
   _id: string;
   code: string;
   name: string;
+  color: string;
+  shape: string;
   description: string;
   picture_url: string;
   created_at: Date;
@@ -31,6 +35,10 @@ export class AlguaeDescriptionDTO {
   name: string;
   @ApiModelProperty({ example: 'XXXXXXXX' })
   code: string;
+  @ApiModelProperty({ example: 'green' })
+  color: string;
+  @ApiModelProperty({ example: 'ruban' })
+  shape: string;
   @ApiModelProperty({ example: 'Some blue alguae' })
   description: string;
   @ApiModelProperty({

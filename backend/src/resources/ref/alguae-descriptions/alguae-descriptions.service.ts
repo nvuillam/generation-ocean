@@ -18,12 +18,18 @@ export class AlguaeDescriptionsService {
 
   private allAlguaeDescriptions: AlguaeDescriptionDTO[];
 
-  async getAlguaeDescriptions(params: object) {
-    const alguaes = this.allAlguaeDescriptions;
+  async getAlguaeDescriptions(params: any) {
+    let alguaes = this.allAlguaeDescriptions;
+    if (params.color) {
+      alguaes = alguaes.filter(v => v.color === params.color);
+    }
+    if (params.shape) {
+      alguaes = alguaes.filter(v => v.shape === params.shape);
+    }
     return alguaes;
   }
 
   async getSingleAlguaeDescription(alguaeDescriptionId: string) {
-    return this.allAlguaeDescriptions.find(v => v._id === alguaeDescriptionId);
+    return this.allAlguaeDescriptions.find(v => v.code === alguaeDescriptionId);
   }
 }
