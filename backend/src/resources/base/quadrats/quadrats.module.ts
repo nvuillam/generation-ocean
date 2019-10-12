@@ -14,10 +14,10 @@ import { WeatherModule } from '../../../services/weather/weather.module';
   imports: [
     MongooseModule.forFeature([{ name: 'Quadrat', schema: QuadratSchema }]),
     AlguaeDescriptionsModule,
-    WeatherModule
+    WeatherModule,
   ],
   exports: [QuadratsService],
   controllers: [QuadratsController],
   providers: [QuadratsService],
 })
-export class QuadratsModule { }
+export class QuadratsModule {}

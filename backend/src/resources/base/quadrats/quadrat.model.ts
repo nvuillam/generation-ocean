@@ -25,10 +25,10 @@ export const QuadratSchema = new mongoose.Schema({
     ref: 'Transect',
   },
   pos_latitude: {
-    type: Number
+    type: Number,
   },
   pos_longitude: {
-    type: Number
+    type: Number,
   },
   status: {
     type: String,
