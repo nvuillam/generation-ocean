@@ -7,13 +7,15 @@ import {
   AlguaeAnalysis,
   AlguaeAnalysisDTO,
 } from '../../ref/alguae-descriptions/alguae-analysis.model';
+import { WeatherService } from '../../../services/weather/weather.service';
 
 @Injectable()
 export class QuadratsService {
   constructor(
     @InjectModel('Quadrat')
     private readonly quadratModel: Model<Quadrat>,
-  ) {}
+    private readonly weatherService: WeatherService,
+  ) { }
 
   async insertQuadrat(quadratData: Quadrat) {
     const newQuadrat: Quadrat = new this.quadratModel(quadratData);
@@ -86,5 +88,23 @@ export class QuadratsService {
       throw new NotFoundException('Could not find quadrat.');
     }
     return quadrat;
+  }
+
+  // Add weather data on quadrat ( only if GPS location is defined and weather has not been retrieved yet)
+  async manageQuadratWeatherData(
+    quadrat: Quadrat,
+  ): Promise<Quadrat> {
+    if (quadrat.pos_latitude != null && quadrat.pos_longitude != null && quadrat.weather == null) {
+      const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(
+        quadrat.pos_latitude,
+        quadrat.pos_longitude,
+      );
+      // If weather info found, set it on the Observation
+      if (localWeatherInfo) {
+        quadrat.weather = localWeatherInfo;
+        return quadrat.save();
+      }
+      return quadrat;
+    }
   }
 }
