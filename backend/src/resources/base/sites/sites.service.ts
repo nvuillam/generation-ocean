@@ -29,6 +29,29 @@ export class SitesService {
     return site;
   }
 
+  async getSingleSiteByLatitudeLongitude(latitude: number, longitude: number) {
+    const constraint = {
+      west_bound_longitude: { $lte: longitude },
+      east_bound_longitude: { $gte: longitude },
+      south_bound_latitude: { $lte: latitude },
+      north_bound_latitude: { $gte: latitude },
+    };
+
+    /*
+    "west_bound_longitude": -4.4122803261631205,
+    "east_bound_longitude": -4.394450546989356,
+    "south_bound_latitude": 48.65389632811334,
+    "north_bound_latitude": 48.65715353764969,
+    */
+
+    const sites: Site[] = await this.siteModel.find(constraint).exec();
+    if (sites.length === 1) {
+      return sites[0];
+    } else {
+      return null;
+    }
+  }
+
   async updateSite(siteId: string, siteData: Site) {
     const updatedSite: Site = await this.findSite(siteId);
     updatedSite.set(siteData);

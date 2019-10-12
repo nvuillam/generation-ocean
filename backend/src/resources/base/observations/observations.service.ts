@@ -92,9 +92,8 @@ export class ObservationsService {
         observation.site,
       );
       if (site.pos_latitude != null && site.pos_longitude != null) {
-        const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(
-          site.pos_latitude,
-          site.pos_longitude,
+        const localWeatherInfo = await this.weatherService.manageLocalWeatherInfo(
+          observation,
         );
         // If weather info found, set it on the Observation
         if (localWeatherInfo) {

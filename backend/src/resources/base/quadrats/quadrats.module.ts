@@ -9,10 +9,12 @@ import { QuadratSchema } from './quadrat.model';
 // Dependencies
 import { AlguaeDescriptionsModule } from '../../ref/alguae-descriptions/alguae-descriptions.module';
 import { WeatherModule } from '../../../services/weather/weather.module';
+import { SitesModule } from '../sites/sites.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Quadrat', schema: QuadratSchema }]),
+    SitesModule,
     AlguaeDescriptionsModule,
     WeatherModule,
   ],

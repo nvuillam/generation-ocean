@@ -30,6 +30,10 @@ export const QuadratSchema = new mongoose.Schema({
   pos_longitude: {
     type: Number,
   },
+  site: {
+    type: ObjectId,
+    ref: 'Site',
+  },
   status: {
     type: String,
     enum: ['draft', 'ready', 'current', 'validation_requested', 'validated'],
@@ -53,6 +57,7 @@ export interface Quadrat extends mongoose.Document {
   status: string;
   pos_latitude: number;
   pos_longitude: number;
+  site: string;
   alguaes: any[];
   created_at: Date;
   additional_info: string;
@@ -75,6 +80,8 @@ export class QuadratDTO {
   pos_latitude: number;
   @ApiModelProperty({ example: 2.3455 })
   pos_longitude: number;
+  @ApiModelProperty({ example: '5d987dc90ed4833f3c28072c' })
+  site: string;
   @ApiModelProperty({
     example: [
       { description_id: 'xxxxxx', code: 'xxxxxx', abundance_index: 4 },

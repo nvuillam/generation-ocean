@@ -1,20 +1,37 @@
 [
     {
-        "_id": "xxxxxx",
-        "code": "V2",
-        "name": "Super algue !",
-        "color": "blue",
-        "shape": "ruban",
-        "description": "XXXXXXXXX",
-        "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Alpaca_%2831562329701%29.jpg/220px-Alpaca_%2831562329701%29.jpg"
+        "_id": "Z1",
+        "code": "Z1",
+        "name": "Zostera spp",
+        "color": "verte",
+        "shape": "ruban"
     },
     {
-        "_id": "yyyyyyy",
+        "_id": "V1",
+        "code": "V1",
+        "name": "Ulva spp.",
+        "color": "verte",
+        "shape": "aplatie"
+    },
+    {
+        "_id": "V2",
+        "code": "V2",
+        "name": "Enteromorpha spp.",
+        "color": "verte",
+        "shape": "filamenteuse"
+    },
+    {
+        "_id": "V3",
+        "code": "V3",
+        "name": "Chaetomorpha spp",
+        "color": "verte",
+        "shape": "filamenteuse"
+    },
+    {
+        "_id": "V4",
         "code": "V4",
-        "name": "Papillovore",
-        "color": "green",
-        "shape": "glouglou",
-        "description": "YYYYYYYYY",
-        "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Corazon_Full.jpg/250px-Corazon_Full.jpg"
+        "name": "Codium",
+        "color": "verte",
+        "shape": "filamenteuse"
     }
 ]

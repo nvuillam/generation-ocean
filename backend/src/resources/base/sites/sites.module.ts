@@ -16,7 +16,7 @@ import { SitesListingModule } from '../../../services/sites-listing/sites-listin
     MongooseModule.forFeature([{ name: 'Site', schema: SiteSchema }]),
     forwardRef(() => ObservationsModule),
     SitesListingModule,
-    WeatherModule,
+    forwardRef(() => WeatherModule),
   ],
   exports: [SitesService],
   controllers: [SitesController],

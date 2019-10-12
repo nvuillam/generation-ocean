@@ -106,4 +106,18 @@ export class QuadratsController extends ResourceRootController {
       alguaeAnalysis,
     );
   }
+
+  // Get Quadrat data
+  @Get(':id/html-map-for-embed')
+  @ApiOperation({
+    title: 'Get HTML to display map with the quadrat at the center',
+  })
+  @ApiResponse({
+    status: 200,
+    type: 'text/html',
+    description: 'Uses Quadrat latitude and longitude to position the map',
+  })
+  getQuadratHtmlMapToEmbed(@Param('id') quadratId: string) {
+    return this.quadratsService.getHtmlMapToEmbed(quadratId);
+  }
 }

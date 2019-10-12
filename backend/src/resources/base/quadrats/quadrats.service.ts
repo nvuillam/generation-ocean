@@ -8,14 +8,16 @@ import {
   AlguaeAnalysisDTO,
 } from '../../ref/alguae-descriptions/alguae-analysis.model';
 import { WeatherService } from '../../../services/weather/weather.service';
+import { SitesService } from '../sites/sites.service';
 
 @Injectable()
 export class QuadratsService {
   constructor(
     @InjectModel('Quadrat')
     private readonly quadratModel: Model<Quadrat>,
+    private readonly sitesService: SitesService,
     private readonly weatherService: WeatherService,
-  ) {}
+  ) { }
 
   async insertQuadrat(quadratData: Quadrat) {
     const newQuadrat: Quadrat = new this.quadratModel(quadratData);
@@ -99,11 +101,21 @@ export class QuadratsService {
     if (
       quadrat.pos_latitude != null &&
       quadrat.pos_longitude != null &&
-      quadrat.weather == null
+      (quadrat.weather == null || quadrat.site == null) // Todo: manage case when site is found after its addition in sites collection in DB
     ) {
-      const localWeatherInfo = await this.weatherService.getLocalWeatherInfo(
-        quadrat.pos_latitude,
-        quadrat.pos_longitude,
+      if (quadrat.site == null) {
+        const site = await this.sitesService.getSingleSiteByLatitudeLongitude(
+          quadrat.pos_latitude,
+          quadrat.pos_longitude,
+        );
+        if (site) {
+          quadrat.site = site.id;
+          await quadrat.save();
+        }
+      }
+
+      const localWeatherInfo = await this.weatherService.manageLocalWeatherInfo(
+        quadrat,
       );
       // If weather info found, set it on the Observation
       if (localWeatherInfo) {
@@ -113,5 +125,56 @@ export class QuadratsService {
       }
     }
     return quadrat;
+  }
+
+  async getHtmlMapToEmbed(quadratId: string) {
+    const quadrat: Quadrat = await this.findQuadrat(quadratId);
+    if (quadrat.pos_latitude == null || quadrat.pos_longitude == null) {
+      return null;
+    }
+
+    const htmlString: string = `
+   <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+        <script type="text/javascript" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    </head>
+
+    <body onload="initialize()">
+        <div id="map" style="width:100%; height:100%"></div>
+    </body>
+</html>
+<script type="text/javascript">
+    function initialize() {
+        var map = L.map('map').setView([${quadrat.pos_latitude}, ${quadrat.pos_longitude}], 12); // LIGNE 14
+
+/*         var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { // LIGNE 16
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        });
+
+        map.addLayer(osmLayer);
+ */
+        var wmsLayer = L.tileLayer.wms('http://portail.indigeo.fr/geoserver/SHOM/wms?', {
+	layers: 'SHOM:RasterMarine_BZH'
+}).addTo(map);
+
+ var wmsLayer = L.tileLayer.wms('http://www.ifremer.fr/services/wms/biologie?', {
+	transparent: true,
+    format: 'image/png',
+    layers: 'SINP_HAB_PEREZ_SIEC8182_VEG_P'
+}).addTo(map);
+var wmsLayer = L.tileLayer.wms('http://www.ifremer.fr/services/wms/biologie?', {
+	transparent: true,
+    format: 'image/png',
+    layers: 'SINP_HAB_PEREZ_SIEC8182_VEG_P'
+}).addTo(map);
+
+    }
+
+</script>
+   `;
+    return htmlString;
   }
 }
