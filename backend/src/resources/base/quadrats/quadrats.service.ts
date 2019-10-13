@@ -17,7 +17,7 @@ export class QuadratsService {
     private readonly quadratModel: Model<Quadrat>,
     private readonly sitesService: SitesService,
     private readonly weatherService: WeatherService,
-  ) { }
+  ) {}
 
   async insertQuadrat(quadratData: Quadrat) {
     const newQuadrat: Quadrat = new this.quadratModel(quadratData);

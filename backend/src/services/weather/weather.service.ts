@@ -22,6 +22,8 @@ export class WeatherService {
       raw_results: {},
       sea_surface_temperature: null,
       sea_level: null,
+      swell_height: null,
+      swell_direction: null,
     };
     // OpenWeatherMap.com
     if (weatherProviderList.includes('openweathermap')) {
@@ -59,6 +61,49 @@ export class WeatherService {
         ...weatherConvertedData,
       };
     }
+
+    // Ifremer swell height
+    if (
+      weatherProviderList.includes('ifremer-swell-info') &&
+      quadrat.site != null
+    ) {
+      const site = await this.sitesService.getSingleSite(quadrat.site);
+      const rawData: any = await this.ifremerService.getSwellInfo(
+        site.related_sea_latitude,
+        site.related_sea_longitude,
+      );
+      weather.raw_results.ifremersurfacetempinfo = rawData;
+      const weatherConvertedData: any = await this.ifremerService.convertRawToGenerationOceanFormatSwell(
+        rawData,
+      );
+      // append parsed results to Weather object
+      weather = {
+        ...weather,
+        ...weatherConvertedData,
+      };
+    }
+
+    // Ifremer swell direction
+    if (
+      weatherProviderList.includes('ifremer-swell-info') &&
+      quadrat.site != null
+    ) {
+      const site = await this.sitesService.getSingleSite(quadrat.site);
+      const rawData: any = await this.ifremerService.getSwellDirectionInfo(
+        site.related_sea_latitude,
+        site.related_sea_longitude,
+      );
+      weather.raw_results.ifremersurfacetempinfo = rawData;
+      const weatherConvertedData: any = await this.ifremerService.convertRawToGenerationOceanFormatSwellDirection(
+        rawData,
+      );
+      // append parsed results to Weather object
+      weather = {
+        ...weather,
+        ...weatherConvertedData,
+      };
+    }
+
     return weather;
   }
 
@@ -67,7 +112,11 @@ export class WeatherService {
     if (fromConfig != null) {
       return fromConfig.split(',');
     } else {
-      return ['openweathermap', 'ifremer-surface-temp-info'];
+      return [
+        'openweathermap',
+        'ifremer-surface-temp-info',
+        'ifremer-swell-info',
+      ];
     }
   }
 }
