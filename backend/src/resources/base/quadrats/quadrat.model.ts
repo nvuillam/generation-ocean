@@ -45,6 +45,7 @@ export const QuadratSchema = new mongoose.Schema({
   },
   created_at: { type: Date, default: Date.now },
   additional_info: String,
+  picture_url: String,
   weather: {
     type: Map,
   },
@@ -61,6 +62,7 @@ export interface Quadrat extends mongoose.Document {
   alguaes: any[];
   created_at: Date;
   additional_info: string;
+  picture_url: string;
   weather: Weather;
 }
 
@@ -93,6 +95,8 @@ export class QuadratDTO {
   created_at: Date;
   @ApiModelProperty({ example: 'Tout commentaire additionnel sur le quadrat' })
   additional_info: string;
+  @ApiModelProperty({ example: 'Picture_url' })
+  picture_url: string;
   @ApiModelProperty()
   weather: WeatherDTO;
 }
