@@ -20,7 +20,6 @@ import {
 } from '../../ref/alguae-descriptions/alguae-analysis.model';
 
 @ApiUseTags('quadrats')
-@UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
 @Controller('quadrats')
 export class QuadratsController extends ResourceRootController {
   constructor(private readonly quadratsService: QuadratsService) {
@@ -29,6 +28,7 @@ export class QuadratsController extends ResourceRootController {
 
   // Create new Quadrat
   @Post()
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Create a new quadrat' })
   @ApiResponse({
     status: 201,
@@ -44,6 +44,7 @@ export class QuadratsController extends ResourceRootController {
 
   // Get Quadrat data
   @Get(':id')
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Get a single quadrat' })
   @ApiResponse({
     status: 200,
@@ -56,6 +57,7 @@ export class QuadratsController extends ResourceRootController {
 
   // Update an existing Quadrat
   @Put(':id')
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Update an existing quadrat' })
   @ApiResponse({
     status: 200,
@@ -75,6 +77,7 @@ export class QuadratsController extends ResourceRootController {
 
   // List alguaes of a Quadrat
   @Get(':id/alguaes')
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Get list of alguaes recorded on a quadrat' })
   @ApiResponse({
     status: 200,
@@ -88,6 +91,7 @@ export class QuadratsController extends ResourceRootController {
 
   // Upsert alguae analysis in quadrat alguaes list
   @Post(':id/alguaes/:alguaeCode')
+  @UseGuards(AuthGuard('jwt')) // Requires authenticated user to access this resource
   @ApiOperation({ title: 'Post a new alguae analysis on a quadrat' })
   @ApiResponse({
     status: 200,
@@ -108,7 +112,7 @@ export class QuadratsController extends ResourceRootController {
   }
 
   // Get Quadrat data
-  @Get(':id/html-map-for-embed')
+  @Get(':id/html-map-for-embed.html')
   @ApiOperation({
     title: 'Get HTML to display map with the quadrat at the center',
   })

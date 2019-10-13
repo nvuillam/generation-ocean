@@ -17,7 +17,7 @@ export class QuadratsService {
     private readonly quadratModel: Model<Quadrat>,
     private readonly sitesService: SitesService,
     private readonly weatherService: WeatherService,
-  ) {}
+  ) { }
 
   async insertQuadrat(quadratData: Quadrat) {
     const newQuadrat: Quadrat = new this.quadratModel(quadratData);
@@ -103,6 +103,11 @@ export class QuadratsService {
       quadrat.pos_longitude != null &&
       (quadrat.weather == null || quadrat.site == null) // Todo: manage case when site is found after its addition in sites collection in DB
     ) {
+
+      // TMP for demo
+      quadrat.pos_latitude = 48.654896;
+      quadrat.pos_longitude = -4.404452;
+
       if (quadrat.site == null) {
         const site = await this.sitesService.getSingleSiteByLatitudeLongitude(
           quadrat.pos_latitude,
@@ -121,6 +126,11 @@ export class QuadratsService {
       if (localWeatherInfo) {
         const updatedQuadrat: Quadrat = await this.findQuadrat(quadrat._id);
         updatedQuadrat.weather = localWeatherInfo;
+
+        // TMP for demo
+        updatedQuadrat.pos_latitude = 48.654896;
+        updatedQuadrat.pos_longitude = -4.404452;
+
         return updatedQuadrat.save();
       }
     }
@@ -134,7 +144,7 @@ export class QuadratsService {
     }
 
     const htmlString: string = `
-   <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
@@ -153,7 +163,7 @@ export class QuadratsService {
             attribution: '© OpenStreetMap contributors',
             maxZoom: 19
         });
-
+    
         map.addLayer(osmLayer);
  */
         var wmsLayer = L.tileLayer.wms('http://portail.indigeo.fr/geoserver/SHOM/wms?', {
@@ -168,12 +178,30 @@ export class QuadratsService {
 var wmsLayer = L.tileLayer.wms('http://www.ifremer.fr/services/wms/biologie?', {
 	transparent: true,
     format: 'image/png',
-    layers: 'SINP_HAB_PEREZ_SIEC8182_VEG_P'
+    layers: 'SINP_HAB_BRAUD_PENM7477_VEG_P'
 }).addTo(map);
+
+var wmsLayer = L.tileLayer.wms('http://www.ifremer.fr/services/wms/biologie?', {
+	transparent: true,
+    format: 'image/png',
+    layers: 'SINP_HAB_FLOCH_MOLENE67_VEG_P'
+}).addTo(map);
+
+var legend;
+
+
 
     }
 
 </script>
+<p>
+<img src='http://www.ifremer.fr/services/wms/biologie?service=wms&request=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&layer=SINP_HAB_FLOCH_MOLENE67_VEG_P'>
+</p>
+<p>
+<img src='http://www.ifremer.fr/services/wms/biologie?service=wms&request=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&layer=SINP_HAB_BRAUD_PENM7477_VEG_P'>
+</p>
+<p><img src='http://www.ifremer.fr/services/wms/biologie?service=wms&request=GetLegendGraphic&VERSION=1.1.1&FORMAT=image/png&WIDTH=20&HEIGHT=20&layer=SINP_HAB_FLOCH_MOLENE67_VEG_P'>
+</p>
    `;
     return htmlString;
   }
