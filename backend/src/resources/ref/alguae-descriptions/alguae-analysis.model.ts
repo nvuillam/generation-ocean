@@ -9,6 +9,7 @@ export const AlguaeAnalysisSchema = new mongoose.Schema({
   description_id: { type: String },
   code: { type: String, required: true },
   abundance_index: { type: Number },
+  picture_url: { type: String },
 });
 
 export interface AlguaeAnalysis extends mongoose.Document {
@@ -16,6 +17,7 @@ export interface AlguaeAnalysis extends mongoose.Document {
   description_id: string;
   code: string;
   abundance_index: number;
+  picture_url: string;
 }
 
 export class AlguaeAnalysisDTO {
@@ -25,6 +27,8 @@ export class AlguaeAnalysisDTO {
   description_id: string;
   @ApiModelProperty({ example: 'xxxxxx' })
   code: string;
+  @ApiModelProperty({ example: 'coucou' })
+  picture_url: string;
   @ApiModelProperty({ example: 4 })
   abundance_index: number;
 }

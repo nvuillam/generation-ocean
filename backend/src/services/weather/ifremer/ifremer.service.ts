@@ -67,21 +67,7 @@ export class IfremerService {
   }
 
   async convertRawToGenerationOceanFormatSwell(rawData) {
-    const weather = new WeatherDTO();
-    const ifremerJson: any = JSON.parse(
-      Xml2Js.xml2json(rawData, { compact: true, spaces: 4 }),
-    );
-    if (
-      ifremerJson.FeatureInfoResponse &&
-      ifremerJson.FeatureInfoResponse.FeatureInfo &&
-      ifremerJson.FeatureInfoResponse.FeatureInfo.value &&
-      ifremerJson.FeatureInfoResponse.FeatureInfo.value._text
-    ) {
-      weather.swell_height = parseFloat(
-        ifremerJson.FeatureInfoResponse.FeatureInfo.value._text,
-      );
-    }
-    return weather;
+    return this.getIfremerResponseValue(rawData, 'swell_height');
   }
 
   // HOULE Direction
@@ -106,25 +92,60 @@ export class IfremerService {
   }
 
   async convertRawToGenerationOceanFormatSwellDirection(rawData) {
-    const weather = new WeatherDTO();
-    const ifremerJson: any = JSON.parse(
-      Xml2Js.xml2json(rawData, { compact: true, spaces: 4 }),
-    );
-    if (
-      ifremerJson.FeatureInfoResponse &&
-      ifremerJson.FeatureInfoResponse.FeatureInfo &&
-      ifremerJson.FeatureInfoResponse.FeatureInfo.value &&
-      ifremerJson.FeatureInfoResponse.FeatureInfo.value._text
-    ) {
-      weather.swell_direction = parseFloat(
-        ifremerJson.FeatureInfoResponse.FeatureInfo.value._text,
-      );
-    }
-    return weather;
+    return this.getIfremerResponseValue(rawData, 'swell_direction');
+  }
+
+  // Current Eastward
+  async getEastwardCurrentInfo(
+    posLatitude: number,
+    posLongitude: number,
+  ): Promise<any> {
+    const baseUri = this.getIfremerBaseApiUrl();
+    const queryBounds = this.buildApiQueryBounds(posLatitude, posLongitude);
+    const nowTimeStartHourStr = this.getTimeWithoutHours();
+    const uri =
+      baseUri +
+      `thredds/wms/MARC-MANGAE2500-MARS3D_F1-FOR_FULL_TIME_SERIE?LAYERS=UZ&ELEVATION=-0.012500000186264515&TIME=${encodeURIComponent(
+        nowTimeStartHourStr,
+      )}&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&SRS=EPSG%3A4326&BBOX=${
+        queryBounds.apiLongitudeMin
+      },${queryBounds.apiLatitudeMin},${queryBounds.apiLongitudeMax},${
+        queryBounds.apiLatitudeMax
+      }&X=1&Y=1&INFO_FORMAT=text%2Fxml&QUERY_LAYERS=UZ&WIDTH=3&HEIGHT=3`;
+    const obs = this.http.get(uri).pipe(map(response => response.data));
+    return obs.toPromise();
+  }
+
+  async convertRawToGenerationOceanFormatEastwardCurrent(rawData) {
+    return this.getIfremerResponseValue(rawData, 'current_eastward');
+  }
+
+  // Current Northward
+  async getNorthwardCurrentInfo(
+    posLatitude: number,
+    posLongitude: number,
+  ): Promise<any> {
+    const baseUri = this.getIfremerBaseApiUrl();
+    const queryBounds = this.buildApiQueryBounds(posLatitude, posLongitude);
+    const nowTimeStartHourStr = this.getTimeWithoutHours();
+    const uri =
+      baseUri +
+      `thredds/wms/MARC-MANGAE2500-MARS3D_F1-FOR_FULL_TIME_SERIE?LAYERS=VZ&ELEVATION=-0.012500000186264515&TIME=${encodeURIComponent(
+        nowTimeStartHourStr,
+      )}&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&SRS=EPSG%3A4326&BBOX=${
+        queryBounds.apiLongitudeMin
+      },${queryBounds.apiLatitudeMin},${queryBounds.apiLongitudeMax},${
+        queryBounds.apiLatitudeMax
+      }&X=1&Y=1&INFO_FORMAT=text%2Fxml&QUERY_LAYERS=VZ&WIDTH=3&HEIGHT=3`;
+    const obs = this.http.get(uri).pipe(map(response => response.data));
+    return obs.toPromise();
+  }
+
+  async convertRawToGenerationOceanFormatNorthwardCurrent(rawData) {
+    return this.getIfremerResponseValue(rawData, 'current_northward');
   }
 
   // COMMON
-
   private getIfremerBaseApiUrl(): string {
     return this.config.get('API_ROOT_IFREMER') || 'http://tds1.ifremer.fr/';
   }
@@ -149,5 +170,23 @@ export class IfremerService {
     nowTime.setHours(hours, 0, 0, 0);
     const nowTimeStartHourStr = nowTime.toISOString();
     return nowTimeStartHourStr;
+  }
+
+  private getIfremerResponseValue(rawData, propName) {
+    const weather = new WeatherDTO();
+    const ifremerJson: any = JSON.parse(
+      Xml2Js.xml2json(rawData, { compact: true, spaces: 4 }),
+    );
+    if (
+      ifremerJson.FeatureInfoResponse &&
+      ifremerJson.FeatureInfoResponse.FeatureInfo &&
+      ifremerJson.FeatureInfoResponse.FeatureInfo.value &&
+      ifremerJson.FeatureInfoResponse.FeatureInfo.value._text
+    ) {
+      weather[propName] = parseFloat(
+        ifremerJson.FeatureInfoResponse.FeatureInfo.value._text,
+      );
+    }
+    return weather;
   }
 }

@@ -13,7 +13,7 @@ export class WeatherService {
     private openWeatherMapService: OpenWeatherMapService,
     private ifremerService: IfremerService,
     private sitesService: SitesService,
-  ) {}
+  ) { }
 
   // Call related weather info service
   async manageLocalWeatherInfo(quadrat: any): Promise<WeatherDTO> {
@@ -24,6 +24,12 @@ export class WeatherService {
       sea_level: null,
       swell_height: null,
       swell_direction: null,
+      current_eastward: null,
+      current_northward: null,
+      current_direction: null,
+      current_speed: null,
+      tide_coef: null,
+      tide_time: null,
     };
     // OpenWeatherMap.com
     if (weatherProviderList.includes('openweathermap')) {
@@ -72,7 +78,7 @@ export class WeatherService {
         site.related_sea_latitude,
         site.related_sea_longitude,
       );
-      weather.raw_results.ifremersurfacetempinfo = rawData;
+      weather.raw_results.ifremersurfacetempinfo1 = rawData;
       const weatherConvertedData: any = await this.ifremerService.convertRawToGenerationOceanFormatSwell(
         rawData,
       );
@@ -93,7 +99,7 @@ export class WeatherService {
         site.related_sea_latitude,
         site.related_sea_longitude,
       );
-      weather.raw_results.ifremersurfacetempinfo = rawData;
+      weather.raw_results.ifremerswellinfo2 = rawData;
       const weatherConvertedData: any = await this.ifremerService.convertRawToGenerationOceanFormatSwellDirection(
         rawData,
       );
@@ -103,6 +109,61 @@ export class WeatherService {
         ...weatherConvertedData,
       };
     }
+
+    // Ifremer northward current
+    if (
+      weatherProviderList.includes('ifremer-northward-current') &&
+      quadrat.site != null
+    ) {
+      const site = await this.sitesService.getSingleSite(quadrat.site);
+      const rawData: any = await this.ifremerService.getNorthwardCurrentInfo(
+        site.related_sea_latitude,
+        site.related_sea_longitude,
+      );
+      weather.raw_results.ifremernorthwardcurrent = rawData;
+      const weatherConvertedData: any = await this.ifremerService.convertRawToGenerationOceanFormatNorthwardCurrent(
+        rawData,
+      );
+      // append parsed results to Weather object
+      weather = {
+        ...weather,
+        ...weatherConvertedData,
+      };
+    }
+
+    // Ifremer eastward current
+    if (
+      weatherProviderList.includes('ifremer-eastward-current') &&
+      quadrat.site != null
+    ) {
+      const site = await this.sitesService.getSingleSite(quadrat.site);
+      const rawData: any = await this.ifremerService.getEastwardCurrentInfo(
+        site.related_sea_latitude,
+        site.related_sea_longitude,
+      );
+      weather.raw_results.ifremereastwardcurrent = rawData;
+      const weatherConvertedData: any = await this.ifremerService.convertRawToGenerationOceanFormatEastwardCurrent(
+        rawData,
+      );
+      // append parsed results to Weather object
+      weather = {
+        ...weather,
+        ...weatherConvertedData,
+      };
+    }
+
+    // Current direction
+    if (weather.current_eastward && weather.current_northward) {
+      weather.current_direction =
+        (Math.atan2(weather.current_eastward, weather.current_northward) *
+          180) /
+        3.14;
+      weather.current_speed = Math.sqrt((weather.current_eastward * weather.current_eastward) + (weather.current_northward * weather.current_northward));
+    }
+
+    // Tide // TODO Fichier SHOM XLS Ports de réference
+    weather.tide_coef = 85;
+    weather.tide_time = 'PM-3H';
 
     return weather;
   }
@@ -116,6 +177,8 @@ export class WeatherService {
         'openweathermap',
         'ifremer-surface-temp-info',
         'ifremer-swell-info',
+        'ifremer-eastward-current',
+        'ifremer-northward-current',
       ];
     }
   }

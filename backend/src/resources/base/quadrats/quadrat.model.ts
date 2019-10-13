@@ -86,8 +86,18 @@ export class QuadratDTO {
   site: string;
   @ApiModelProperty({
     example: [
-      { description_id: 'xxxxxx', code: 'xxxxxx', abundance_index: 4 },
-      { description_id: 'yyyyyyy', code: 'yyyyyyy', abundance_index: 2 },
+      {
+        description_id: 'xxxxxx',
+        code: 'xxxxxx',
+        abundance_index: 4,
+        picture_url: 'coucou alex',
+      },
+      {
+        description_id: 'yyyyyyy',
+        code: 'yyyyyyy',
+        abundance_index: 2,
+        picture_url: 'coucou alexxxxx',
+      },
     ],
   })
   alguaes: any[];
