@@ -28,7 +28,7 @@
     "@nestjs/platform-express": "^6.8.0",
     "@nestjs/swagger": "^3.1.0",
     "dotenv": "^8.1.0",
-    "mongoose": "^5.7.3",
+    "mongoose": "^5.7.5",
     "mongoose-auto-increment": "^5.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
